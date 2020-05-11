@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
+const RemovePlugin = require('remove-files-webpack-plugin');
 
 const webpack = require('webpack');
 
@@ -98,6 +99,18 @@ module.exports = {
         }),
         new CopyPlugin([
             { from: './src/assets', to: './assets' }
-         ]),
+        ]),
+		new RemovePlugin({
+			before: {
+                include: [
+					'./docs'
+				]
+            },
+			watch: {
+                include: [
+					'./docs'
+				]
+            }
+		})
     ]
 };
