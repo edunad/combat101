@@ -1,0 +1,27 @@
+{
+    "compilerOptions": {
+        "target": "es6",
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "allowSyntheticDefaultImports": true,
+        "forceConsistentCasingInFileNames": true,
+        "module": "commonjs",
+        "sourceMap": true,
+        "strictNullChecks": false,
+        "declaration": false,
+        "noEmitHelpers": true,
+        "importHelpers": true,
+        "resolveJsonModule": true,
+        "jsx": "react",
+        "lib": [
+            "dom",
+            "es6"
+        ],
+        "typeRoots": [
+            "node_modules/@types"
+        ]
+    },
+    "exclude": [
+        "node_modules"
+    ]
+}

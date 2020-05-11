@@ -1,0 +1,36 @@
+{
+    "name": "combat101",
+    "version": "0.0.1",
+    "private": true,
+    "description": "",
+    "author": "Eduardo Fernandes",
+    "dependencies": {
+        "@edunad/hooks": "0.0.3",
+        "react": "^16.13.1",
+        "react-dom": "^16.13.1"
+    },
+    "devDependencies": {
+        "@types/react": "^16.9.35",
+        "@types/react-dom": "^16.9.8",
+        "copy-webpack-plugin": "^5.1.1",
+        "css-loader": "^3.5.3",
+        "html-webpack-plugin": "^4.3.0",
+        "mini-css-extract-plugin": "^0.9.0",
+        "node-sass": "^4.14.1",
+        "optimize-css-assets-webpack-plugin": "^5.0.3",
+        "sass-loader": "^8.0.2",
+        "ts-loader": "^7.0.3",
+        "tslint": "^6.1.2",
+        "tslint-react": "^5.0.0",
+        "typescript": "^3.8.3",
+        "webpack": "^4.43.0",
+        "webpack-cli": "^3.3.11",
+        "webpack-dev-server": "^3.11.0"
+    },
+    "scripts": {
+        "start": "webpack --config webpack.config.js --progress --mode production",
+        "watch": "webpack --config webpack.config.js --progress --watch --mode development",
+        "dev": "webpack-dev-server",
+        "lint": "tslint ./src/**/*.tsx"
+    }
+}
