@@ -5,9 +5,7 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+    branches: dev
 
 jobs:
   build:
@@ -30,4 +28,6 @@ jobs:
     - name: Deploy to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@3.4.9
       with:
-        BRANCH: docs 
+        CLEAN: true
+        BRANCH: master
+        FOLDER: docs
