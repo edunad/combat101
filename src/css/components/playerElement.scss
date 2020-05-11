@@ -1,0 +1,31 @@
+.player-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-size: 16px;
+    height: 24px;
+}
+
+.player-icon {
+    object-fit: contain;
+
+    width: 24px;
+    height: 24px;
+}
+
+.player-info-container {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+
+    position: relative;
+}
+
+.player-info {
+    padding-left: 4px;
+    flex: 1;
+}
+
+.player-numbers {
+    padding-right: 4px;
+}

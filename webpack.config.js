@@ -38,6 +38,13 @@ module.exports = {
     module: {
         rules: [
             {
+                test: /\.(woff2?|ttf|eot|svg|otf)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+                loader: 'file-loader',
+                options: {
+                    name: 'fonts/[name].[ext]?[hash]'
+                }
+            },
+            {
                 test: /\.css$/,
                 use: [
                     MiniCssExtractPlugin.loader,

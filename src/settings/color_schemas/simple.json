@@ -1,0 +1,141 @@
+{
+    "GLA": {
+        "color": "hsl(207, 80, 45%)",
+        "name": "Gladiator"
+    },
+
+    "PLD": {
+        "color": "hsl(207, 80, 45%)",
+        "name": "Paladin"
+    },
+
+    "SCH": {
+        "color": "hsl(94,  50, 40%)",
+        "name": "Scholar"
+    },
+
+    "PGL": {
+        "color": "hsl(340, 85, 40%)",
+        "name": "Pugilist"
+    },
+
+    "WHM": {
+        "color": "hsl(94,  50, 40%)",
+        "name": "White Mage"
+    },
+
+    "MRD": {
+        "color": "hsl(207, 80, 45%)",
+        "name": "Marauder"
+    },
+
+    "BLM": {
+        "color": "hsl(340, 85, 40%)",
+        "name": "Black Mage"
+    },
+
+    "LNC": {
+        "color": "hsl(207, 80, 45%)",
+        "name": "Lancer"
+    },
+
+    "ARC": {
+        "color": "hsl(340, 85, 40%)",
+        "name": "Archer"
+    },
+
+    "THM": {
+        "color": "hsl(340, 85, 40%)",
+        "name": "Thaumaturge"
+    },
+
+    "CNJ": {
+        "color": "hsl(94,  50, 40%)",
+        "name": "Conjurer"
+    },
+
+    "ACN": {
+        "color": "hsl(340, 85, 40%)",
+        "name": "Arcanist"
+    },
+
+    "MNK": {
+        "color": "hsl(340, 85, 40%)",
+        "name": "Monk"
+    },
+
+    "WAR": {
+        "color": "hsl(207, 80, 45%)",
+        "name": "Warrior"
+    },
+
+    "DRG": {
+        "color": "hsl(340, 85, 40%)",
+        "name": "Dragoon"
+    },
+
+    "ROG": {
+        "color": "hsl(340, 85, 40%)",
+        "name": "Rogue"
+    },
+
+    "NIN": {
+        "color": "hsl(340, 85, 40%)",
+        "name": "Ninja"
+    },
+
+    "MCH": {
+        "color": "hsl(340, 85, 40%)",
+        "name": "Machinist"
+    },
+
+    "AST": {
+        "color": "hsl(94,  50, 40%)",
+        "name": "Astrologian"
+    },
+
+    "DRK": {
+        "color": "hsl(207, 80, 45%)",
+        "name": "Dark Knight"
+    },
+
+    "SAM": {
+        "color": "hsl(340, 85, 40%)",
+        "name": "Samurai"
+    },
+
+    "RDM": {
+        "color": "hsl(340, 85, 40%)",
+        "name": "Red Mage"
+    },
+
+    "DNC": {
+        "color": "hsl(340, 85, 40%)",
+        "name": "Dancer"
+    },
+
+    "GNB": {
+        "color": "hsl(207, 80, 45%)",
+        "name": "Gunbreaker"
+    },
+
+    "BLU": {
+        "color": "hsl(340, 85, 40%)",
+        "name": "Blue Mage"
+    },
+
+    "BRD": {
+        "color": "hsl(340, 85, 40%)",
+        "name": "Bard"
+    },
+
+    "SMN": {
+        "color": "hsl(340, 85, 40%)",
+        "name": "Summoner"
+    },
+
+    "DEFAULT": {
+        "color": "rgb(250, 250, 250)",
+        "name": null
+    }
+}

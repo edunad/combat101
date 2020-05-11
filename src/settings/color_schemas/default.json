@@ -1,0 +1,141 @@
+{
+    "GLA": {
+        "color": "rgb(21, 28, 100)",
+        "name": "Gladiator"
+    },
+
+    "PLD": {
+        "color": "rgb(21, 28, 100)",
+        "name": "Paladin"
+    },
+
+    "SCH": {
+        "color": "rgb(121, 134, 203)",
+        "name": "Scholar"
+    },
+
+    "PGL": {
+        "color": "rgb(255, 152, 0)",
+        "name": "Pugilist"
+    },
+
+    "WHM": {
+        "color": "rgb(117, 117, 117)",
+        "name": "White Mage"
+    },
+
+    "MRD": {
+        "color": "rgb(153, 23, 23)",
+        "name": "Marauder"
+    },
+
+    "BLM": {
+        "color": "rgb(126, 87, 194)",
+        "name": "Black Mage"
+    },
+
+    "LNC": {
+        "color": "rgb(63, 81, 181)",
+        "name": "Lancer"
+    },
+
+    "ARC": {
+        "color": "rgb(158, 157, 36)",
+        "name": "Archer"
+    },
+
+    "THM": {
+        "color": "rgb(126, 87, 194)",
+        "name": "Thaumaturge"
+    },
+
+    "CNJ": {
+        "color": "rgb(117, 117, 117)",
+        "name": "Conjurer"
+    },
+
+    "ACN": {
+        "color": "rgb(46, 125, 50)",
+        "name": "Arcanist"
+    },
+
+    "MNK": {
+        "color": "rgb(255, 152, 0)",
+        "name": "Monk"
+    },
+
+    "WAR": {
+        "color": "rgb(153, 23, 23)",
+        "name": "Warrior"
+    },
+
+    "DRG": {
+        "color": "rgb(63, 81, 181)",
+        "name": "Dragoon"
+    },
+
+    "ROG": {
+        "color": "rgb(211, 47, 47)",
+        "name": "Rogue"
+    },
+
+    "NIN": {
+        "color": "rgb(211, 47, 47)",
+        "name": "Ninja"
+    },
+
+    "MCH": {
+        "color": "rgb(0, 151, 167)",
+        "name": "Machinist"
+    },
+
+    "AST": {
+        "color": "rgb(121, 85, 72)",
+        "name": "Astrologian"
+    },
+
+    "DRK": {
+        "color": "rgb(136, 14, 79)",
+        "name": "Dark Knight"
+    },
+
+    "SAM": {
+        "color": "rgb(255, 202, 40)",
+        "name": "Samurai"
+    },
+
+    "RDM": {
+        "color": "rgb(233, 30, 99)",
+        "name": "Red Mage"
+    },
+
+    "DNC": {
+        "color": "rgb(244, 143, 177)",
+        "name": "Dancer"
+    },
+
+    "GNB": {
+        "color": "rgb(78, 52, 46)",
+        "name": "Gunbreaker"
+    },
+
+    "BLU": {
+        "color": "rgb(0, 185, 247)",
+        "name": "Blue Mage"
+    },
+
+    "BRD": {
+        "color": "rgb(158, 157, 36)",
+        "name": "Bard"
+    },
+
+    "SMN": {
+        "color": "rgb(46, 125, 50)",
+        "name": "Summoner"
+    },
+
+    "DEFAULT": {
+        "color": "rgb(250, 250, 250)",
+        "name": null
+    }
+}
