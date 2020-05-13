@@ -2,15 +2,21 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    font-size: 16px;
-    height: 24px;
+
+    border-bottom: 1px solid hsl(0, 0%, 0%);
+
+    letter-spacing: 1px;
+    font-size: 13px;
+    height: 20px;
 }
 
 .player-icon {
-    object-fit: contain;
+    object-fit: cover;
 
-    width: 24px;
-    height: 24px;
+    background-color: black;
+
+    width: 22px;
+    height: 100%;
 }
 
 .player-info-container {
@@ -18,14 +24,51 @@
     flex-direction: row;
     flex: 1;
 
+    background-color:#000000dc;
+    align-items: center;
+
+    height: 100%;
     position: relative;
+}
+
+.player-info-container.you {
+    background-color:rgba(44, 1, 1, 0.8);
 }
 
 .player-info {
     padding-left: 4px;
     flex: 1;
+
+    text-transform: capitalize;
+
+    color: white;
+
+    position: relative;
+    top: -1px;
+
+    z-index: 10;
 }
 
 .player-numbers {
     padding-right: 4px;
+
+    position: relative;
+    top: -1px;
+
+    z-index: 10;
+}
+
+.player-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    z-index:01;
+    opacity: 0.4;
+
+    background-image: url('../../assets/img/background-dots.png');
+    background-repeat: repeat;
 }

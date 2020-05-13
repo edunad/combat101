@@ -1,12 +1,18 @@
 'use strict';
 
 import * as React from 'react';
+
 import { OverlayService } from '../../services/OverlayService';
 import { EncounterService } from '../../services/EncounterService';
 import { SchemasService } from '../../services/SchemasService';
-import { PlayerElement } from '../PlayerElement/PlayerElement';
-import { Player } from '../../models/Player';
+
 import { Navbar } from '../Navbar/Navbar';
+import { PlayerContainer } from '../PlayerContainer/PlayerContainer';
+import { PluginService } from '../../services/PluginService';
+import { HookSubscription } from '@edunad/hooks';
+import { Encounter } from '../../models/Encounter';
+import { EncounterSortPlugin } from '../../interfaces/Sort/EncounterSortPlugin';
+
 
 /**
  * The AppState interface
@@ -14,6 +20,14 @@ import { Navbar } from '../Navbar/Navbar';
  */
 interface AppState {
     isLoaded: boolean;
+
+    isDragging: boolean;
+
+    dragStartPosY: number;
+    dragStartHeight: number;
+
+    currentEncounter: Encounter;
+    currentSortPlugin: EncounterSortPlugin;
 }
 
 /**
@@ -21,17 +35,21 @@ interface AppState {
  * @class
  */
 export class App extends React.Component<any, AppState>  {
-    /**
-     * Initializes the App class
-     * @param {any} props
-     *
-     * @constructor
-     */
+    private onEncounterUpdate: HookSubscription;
+    private onModeUpdate: HookSubscription;
+
     constructor(props: any) {
         super(props);
 
         this.state = {
-            isLoaded: false
+            isLoaded: false,
+            isDragging: false,
+
+            dragStartPosY: 0,
+            dragStartHeight: 0,
+
+            currentEncounter: null,
+            currentSortPlugin: null
         };
     }
 
@@ -41,11 +59,22 @@ export class App extends React.Component<any, AppState>  {
      * @returns {void}
      */
     public componentDidMount(): void {
-        OverlayService.initialize();
-        SchemasService.initialize();
-        EncounterService.initialize();
+        this.registerListeners();
+        this.subscribeObservables();
 
-        this.setState({isLoaded: true});
+        PluginService.initialize(() => {
+            OverlayService.initialize();
+            SchemasService.initialize();
+            EncounterService.initialize();
+
+            //OverlayService.loadMockData();
+
+            this.setState({
+                isLoaded: true,
+                currentEncounter: EncounterService.getCurrentEncounter(),
+                currentSortPlugin: EncounterService.getCurrentSortPlugin()
+            });
+        });
     }
 
     /**
@@ -55,39 +84,85 @@ export class App extends React.Component<any, AppState>  {
      */
     public componentWillUnmount(): void {
         EncounterService.onDestroy();
+        this.unsubscribeObservables();
     }
 
-    public fakePlayer(): Player {
-        let ply: Player = new Player({
-            job: SchemasService.getJobFromScheme('ARC'),
-            name: 'Bromvlieg'
+    private subscribeObservables(): void {
+        this.onEncounterUpdate = EncounterService.onEncounterUpdate.add('encounterupdate', (data: Encounter) => {
+            this.setState({
+                currentEncounter: data
+            });
         });
 
-        ply.updateData({
-            damage_blocked: 100,
-            dps: 342,
-            damage_blocked_perc: '50%',
-            damage_perc: '100%',
-            damage_total: 10000,
-            deaths: 0,
-            hps: 0,
-            max_heal: 1000,
-            max_heal_perc: '100%',
-            threat: '0',
-            threat_delta: 0
+        this.onModeUpdate = EncounterService.onSortUpdate.add('modeupdate', (data: EncounterSortPlugin) => {
+            this.setState({
+                currentSortPlugin: data
+            });
         });
-
-        return ply;
     }
 
-    public renderApp(): any {
+    private unsubscribeObservables(): void {
+        this.onModeUpdate.destroy();
+        this.onEncounterUpdate.destroy();
+    }
+
+    private startDrag($event: any): void {
+        let element: HTMLElement = document.getElementById('app-container');
+        if(element == null) return;
+
+        let currentHeight: DOMRect = element.getBoundingClientRect();
+        this.setState({isDragging: true, dragStartPosY: $event.clientY, dragStartHeight: currentHeight.height});
+    }
+
+    private moveDrag($event: any): void {
+        let element: HTMLElement = document.getElementById('app-container');
+        if(element == null) return;
+
+        let startMouseY: number = this.state.dragStartPosY;
+        let mouseY: number = $event.clientY;
+        let newSize: number = (this.state.dragStartHeight + (mouseY - startMouseY));
+        let gridSize: number = 21;
+        let grid: number = gridSize * Math.round(newSize / gridSize);
+
+        element.style.height = `${Math.clamp(grid, 63, 234)}px`;
+    }
+
+    private stopDrag(): void {
+        this.setState({isDragging: false});
+    }
+
+    private registerListeners(): void {
+        document.addEventListener('mouseup', ($event: any) => {
+            if(!this.state.isDragging) return;
+            this.stopDrag();
+        }, { passive: true });
+
+        document.addEventListener('mousemove', ($event: any) => {
+            if(!this.state.isDragging) return;
+            this.moveDrag($event);
+        }, { passive: true });
+    }
+
+    private renderApp(): any {
         if(!this.state.isLoaded) return;
+
         return (
             <>
-                <Navbar/>
-                <div className='player-list'>
-                    <PlayerElement index={1} player={this.fakePlayer()} />
-                </div>
+                <Navbar
+                    currentSortPlugin={this.state.currentSortPlugin}
+                    currentEncounter={this.state.currentEncounter}
+                />
+
+                <PlayerContainer
+                    currentSortPlugin={this.state.currentSortPlugin}
+                    currentEncounter={this.state.currentEncounter}
+                    isDragging={this.state.isDragging}
+                />
+
+                <div
+                    className='resize-handler'
+                    onMouseDown={this.startDrag.bind(this)}
+                />
             </>
         );
     }

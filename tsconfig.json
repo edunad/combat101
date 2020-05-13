@@ -23,5 +23,8 @@
     },
     "exclude": [
         "node_modules"
+    ],
+    "sideEffects": [
+        "./src/sort/plugins/*.tsx"
     ]
 }

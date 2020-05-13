@@ -135,7 +135,7 @@
     },
 
     "DEFAULT": {
-        "color": "rgb(250, 250, 250)",
-        "name": null
+        "color": "rgb(80, 80, 80)",
+        "name": "DEFAULT"
     }
 }

@@ -1,0 +1,12 @@
+.player-list {
+    height: 100%;
+    overflow: hidden;
+
+    border-left: dashed 1px black;
+    border-right: dashed 1px black;
+    border-bottom: dashed 1px black;
+}
+
+.player-list.dragging {
+    background-color: rgba(1,1,1,0.5);
+}

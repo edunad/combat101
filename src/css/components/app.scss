@@ -3,18 +3,22 @@
     display: flex;
     flex-direction: column;
 
-    flex: 1;
     position: relative;
 
-    color: white;
-    background-color: rgba(0, 0, 0, 0.6);
-
+    color: rgb(238, 238, 238);
     z-index: 1;
+
+    -webkit-app-region: drag;
+    flex: 1;
 }
 
-.player-list {
-    display: flex;
-    flex-direction: column;
+.resize-handler {
+    width: 100%;
+    height: 10px;
 
-    flex: 1;
+    background-color: rgba(1,1,1,0.01);
+    text-align: center;
+
+    -webkit-app-region: no-drag;
+    cursor: n-resize;
 }
