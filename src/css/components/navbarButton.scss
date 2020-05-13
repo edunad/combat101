@@ -1,0 +1,21 @@
+
+.navbar-button {
+    object-fit: contain;
+    image-rendering: pixelated;
+
+    -webkit-app-region: no-drag;
+    pointer-events: all;
+
+    padding: 0 2px;
+
+    cursor: pointer;
+    filter: brightness(30%);
+}
+
+.navbar-button:hover {
+    filter:brightness(80%);
+}
+
+.navbar-button.active {
+    filter:brightness(100%);
+}

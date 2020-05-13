@@ -12,6 +12,8 @@ import { EncounterSortPlugin } from '../../interfaces/Sort/EncounterSortPlugin';
 
 interface PlayerContainerProps {
     isDragging: boolean;
+    isEditing: boolean;
+
     currentEncounter: Encounter;
     currentSortPlugin: EncounterSortPlugin;
 }
@@ -27,7 +29,7 @@ export class PlayerContainer extends React.Component<PlayerContainerProps> {
         if(element == null) return [false, 0];
 
         let bounds: DOMRect = element.getBoundingClientRect();
-        let playerElementSize: number = 22; // In pixels
+        let playerElementSize: number = 21; // In pixels
         let currentSize: number = 0;
         let canSee: boolean = false;
         let visibleRows: number = 0;
@@ -73,24 +75,25 @@ export class PlayerContainer extends React.Component<PlayerContainerProps> {
         });
     }
 
-    private renderNoData(): any {
+    private renderPlayerList(players: Player[]): any {
         return (
-            <div style={{backgroundColor: '#000', textAlign: 'center'}}>-- NO DATA --</div>
-        );
+            <FlipMove enterAnimation={false} leaveAnimation={false}>
+                {this.renderPlayers(players)}
+            </FlipMove>
+        )
     }
 
     public render(): any {
-        let encounter: Encounter = this.props.currentEncounter;
-        if(encounter == null) return this.renderNoData();
+        let players: Player[] = null;
 
-        let players: Player[] = encounter.getPlayers();
-        if(players == null || players.length <= 0) return this.renderNoData();
+        let encounter: Encounter = this.props.currentEncounter;
+        if(encounter != null) players = encounter.getPlayers();
+
+        let classNames: string = `player-list ${this.props.isDragging || this.props.isEditing ? 'dragging': ''}`;
 
         return(
-            <div className={`player-list ${this.props.isDragging ? 'dragging': ''}`} id='player-list-container'>
-                <FlipMove enterAnimation={false} leaveAnimation={false}>
-                    {this.renderPlayers(players)}
-                </FlipMove>
+            <div className={classNames} id='player-list-container'>
+                {players != null && players.length > 0 ? this.renderPlayerList(players) : null}
             </div>
         );
     }

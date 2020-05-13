@@ -12,6 +12,7 @@ import { PluginService } from '../../services/PluginService';
 import { HookSubscription } from '@edunad/hooks';
 import { Encounter } from '../../models/Encounter';
 import { EncounterSortPlugin } from '../../interfaces/Sort/EncounterSortPlugin';
+import { SettingsService } from '../../services/SettingsService';
 
 
 /**
@@ -28,6 +29,8 @@ interface AppState {
 
     currentEncounter: Encounter;
     currentSortPlugin: EncounterSortPlugin;
+
+    editMode: boolean;
 }
 
 /**
@@ -37,6 +40,7 @@ interface AppState {
 export class App extends React.Component<any, AppState>  {
     private onEncounterUpdate: HookSubscription;
     private onModeUpdate: HookSubscription;
+    private onEditModeUpdate: HookSubscription;
 
     constructor(props: any) {
         super(props);
@@ -49,7 +53,9 @@ export class App extends React.Component<any, AppState>  {
             dragStartHeight: 0,
 
             currentEncounter: null,
-            currentSortPlugin: null
+            currentSortPlugin: null,
+
+            editMode: false
         };
     }
 
@@ -72,7 +78,8 @@ export class App extends React.Component<any, AppState>  {
             this.setState({
                 isLoaded: true,
                 currentEncounter: EncounterService.getCurrentEncounter(),
-                currentSortPlugin: EncounterService.getCurrentSortPlugin()
+                currentSortPlugin: EncounterService.getCurrentSortPlugin(),
+                editMode: SettingsService.isEditing()
             });
         });
     }
@@ -88,15 +95,21 @@ export class App extends React.Component<any, AppState>  {
     }
 
     private subscribeObservables(): void {
-        this.onEncounterUpdate = EncounterService.onEncounterUpdate.add('encounterupdate', (data: Encounter) => {
+        this.onEncounterUpdate = EncounterService.onEncounterUpdate.add('encounterUpdate', (data: Encounter) => {
             this.setState({
                 currentEncounter: data
             });
         });
 
-        this.onModeUpdate = EncounterService.onSortUpdate.add('modeupdate', (data: EncounterSortPlugin) => {
+        this.onModeUpdate = EncounterService.onSortUpdate.add('modeUpdate', (data: EncounterSortPlugin) => {
             this.setState({
                 currentSortPlugin: data
+            });
+        });
+
+        this.onEditModeUpdate = SettingsService.onEditModeUpdate.add('editModeUpdate', (data: boolean) => {
+            this.setState({
+                editMode: data
             });
         });
     }
@@ -104,6 +117,7 @@ export class App extends React.Component<any, AppState>  {
     private unsubscribeObservables(): void {
         this.onModeUpdate.destroy();
         this.onEncounterUpdate.destroy();
+        this.onEditModeUpdate.destroy();
     }
 
     private startDrag($event: any): void {
@@ -143,6 +157,16 @@ export class App extends React.Component<any, AppState>  {
         }, { passive: true });
     }
 
+    private renderResizeHandler(): any {
+        if(!this.state.editMode) return;
+        return (
+            <div
+                className='resize-handler'
+                onMouseDown={this.startDrag.bind(this)}
+            />
+        );
+    }
+
     private renderApp(): any {
         if(!this.state.isLoaded) return;
 
@@ -151,18 +175,17 @@ export class App extends React.Component<any, AppState>  {
                 <Navbar
                     currentSortPlugin={this.state.currentSortPlugin}
                     currentEncounter={this.state.currentEncounter}
+                    isEditing={this.state.editMode}
                 />
 
                 <PlayerContainer
                     currentSortPlugin={this.state.currentSortPlugin}
                     currentEncounter={this.state.currentEncounter}
                     isDragging={this.state.isDragging}
+                    isEditing={this.state.editMode}
                 />
 
-                <div
-                    className='resize-handler'
-                    onMouseDown={this.startDrag.bind(this)}
-                />
+                {this.renderResizeHandler()}
             </>
         );
     }

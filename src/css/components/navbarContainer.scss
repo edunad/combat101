@@ -45,7 +45,7 @@
 
     flex-shrink: 0;
 
-    padding-right: 20px;
+    padding-right: 5px;
     background-color: #101010;
     border-bottom: 1px solid #000;
 }
@@ -64,13 +64,17 @@
 /*
     TOOL
 */
-
+.navbar-sub-toolbar-reverse,
 .navbar-sub-toolbar {
     display: flex;
-    flex-direction: row-reverse;
+    flex-direction: row;
 
     flex: 1;
     height: 100%;
+}
+
+.navbar-sub-toolbar-reverse {
+    flex-direction: row-reverse;
 }
 
 .navbar-sub-group {
@@ -79,25 +83,4 @@
 
 .navbar-sub-group:not(:last-child) {
     border-left: 2px solid #1d1d1d;
-}
-
-.navbar-sub-tool {
-    object-fit: contain;
-    image-rendering: pixelated;
-
-    -webkit-app-region: no-drag;
-    pointer-events: all;
-
-    padding: 0 2px;
-
-    cursor: pointer;
-    filter: brightness(30%);
-}
-
-.navbar-sub-tool:hover {
-    filter:brightness(80%);
-}
-
-.navbar-sub-tool.active {
-    filter:brightness(100%);
 }

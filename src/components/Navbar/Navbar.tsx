@@ -6,10 +6,14 @@ import { Encounter } from '../../models/Encounter';
 import { EncounterSortPlugin } from '../../interfaces/Sort/EncounterSortPlugin';
 import { PluginService } from '../../services/PluginService';
 import { EncounterService } from '../../services/EncounterService';
+import { NavbarButton } from '../NavbarButton/NavbarButton';
+import { SettingsService } from '../../services/SettingsService';
 
 interface NavbarProps {
     currentSortPlugin: EncounterSortPlugin;
     currentEncounter: Encounter;
+
+    isEditing: boolean;
 }
 
 export class Navbar extends React.Component<NavbarProps> {
@@ -38,14 +42,12 @@ export class Navbar extends React.Component<NavbarProps> {
 
     private drawGroups(plugins: EncounterSortPlugin[]): any {
         return plugins.map((plugin: EncounterSortPlugin) => {
-            let icon: string = `./assets/icons/ui/${plugin.getIcon()}.png`;
-
             return (
-                <img
+                <NavbarButton
                     key={plugin.getID()}
-                    className={`navbar-sub-tool ${plugin === this.props.currentSortPlugin ? 'active' : ''}`}
+                    active={plugin === this.props.currentSortPlugin}
+                    icon={plugin.getIcon()}
                     onClick={this.onSortClick.bind(this, plugin)}
-                    src={icon}
                 />
             );
         });
@@ -66,6 +68,20 @@ export class Navbar extends React.Component<NavbarProps> {
         });
     }
 
+    private toggleSettings(): void {
+        SettingsService.toggleEditMode();
+    }
+
+    private drawSettings(): any {
+        return (
+            <NavbarButton
+                active={this.props.isEditing}
+                icon={'icon-config'}
+                onClick={this.toggleSettings}
+            />
+        );
+    }
+
     /**
      * React render method
      *
@@ -81,8 +97,11 @@ export class Navbar extends React.Component<NavbarProps> {
 
                 <div className='navbar-sub-container'>
                     <div className='navbar-sub-splitter'/>
-                    <div className='navbar-sub-toolbar'>
+                    <div className='navbar-sub-toolbar-reverse'>
                         {this.drawTools()}
+                    </div>
+                    <div className='navbar-sub-toolbar'>
+                        {this.drawSettings()}
                     </div>
                 </div>
             </>
