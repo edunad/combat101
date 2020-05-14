@@ -11,18 +11,3 @@
     -webkit-app-region: drag;
     flex: 1;
 }
-
-.resize-handler {
-    width: 100%;
-    height: 15px;
-
-    background-color: rgba(1, 1, 1, 0.01);
-    text-align: center;
-
-    position: absolute;
-    bottom: 0;
-    left: 0;
-
-    -webkit-app-region: no-drag;
-    cursor: n-resize;
-}

@@ -1,0 +1,103 @@
+.settings-container {
+    position: fixed;
+    top: 22px;
+
+    display: flex;
+    flex-direction: column;
+
+    font-family: 'Accidental Presidency';
+
+	max-width: 260px;
+	min-width: 260px;
+    width: 260px;
+
+    height: 100%;
+
+    z-index: 1000;
+}
+
+.settings-container-item,
+.settings-container-group {
+    display: flex;
+    align-items: center;
+
+    color: white;
+
+    height: 20px;
+    flex-shrink: 0;
+
+    background-color: #363636;
+    position: relative;
+}
+
+.settings-container-group-icon {
+    display: flex;
+    background-color: #000;
+
+    height: 100%;
+    padding: 0 2px;
+}
+
+.settings-container-group-title {
+    font-size: 16px;
+    padding-left: 3px;
+
+    position: relative;
+    top: -1px;
+}
+
+.settings-container-item {
+    height: 18px;
+    padding-left: 12px;
+
+    background-color: #141414;
+}
+
+.settings-container-item:not(:last-child) {
+    border-bottom: 1px solid #353535;
+}
+
+.settings-container-item:nth-child(odd) {
+    background-color: rgb(29, 29, 29);
+}
+
+.settings-container-item-icon {
+    position: relative;
+    top: -9px;
+
+    width: 16px;
+    height: 100%;
+
+    border-bottom: dashed 1px white;
+    border-left: dashed 1px white;
+}
+
+.settings-container-item-title {
+    display: flex;
+    align-items: center;
+
+    font-size: 14px;
+
+    padding-left: 5px;
+    margin-bottom: -1px;
+
+    flex: 1;
+    height: 100%;
+
+    cursor: pointer;
+
+    position: relative;
+    top: -1px;
+}
+
+.settings-container-item-title.active {
+    background-color: #ffffff;
+    color: black;
+    text-shadow: none;
+
+    cursor: auto;
+}
+
+.settings-container-item-title:not(.active):hover {
+    background-color: #3d3d3d;
+}

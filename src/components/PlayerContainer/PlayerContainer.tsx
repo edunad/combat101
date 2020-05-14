@@ -8,20 +8,62 @@ import { Encounter } from '../../models/Encounter';
 import { EncounterService } from '../../services/EncounterService';
 import { PlayerElement } from '../PlayerElement/PlayerElement';
 import { EncounterSortPlugin } from '../../interfaces/Sort/EncounterSortPlugin';
+import { HookSubscription } from '@edunad/hooks';
 
+const MAX_PLAYERS: number = 10;
 
 interface PlayerContainerProps {
-    isDragging: boolean;
-    isEditing: boolean;
+    isResizing: boolean;
+}
 
+interface PlayerContainerState {
     currentEncounter: Encounter;
     currentSortPlugin: EncounterSortPlugin;
 }
 
-const MAX_PLAYERS: number = 10;
-export class PlayerContainer extends React.Component<PlayerContainerProps> {
+export class PlayerContainer extends React.Component<PlayerContainerProps, PlayerContainerState> {
+    private onEncounterUpdate: HookSubscription;
+    private onSortUpdate: HookSubscription;
+
     constructor(props: PlayerContainerProps) {
         super(props);
+        this.state = {
+            currentEncounter: null,
+            currentSortPlugin: null
+        };
+    }
+
+    public componentDidMount(): void {
+        this.setState({
+            currentEncounter: EncounterService.getCurrentEncounter(),
+            currentSortPlugin: EncounterService.getCurrentSortPlugin()
+        });
+
+        this.subscribeObservables();
+    }
+
+    public componentWillUnmount(): void {
+        this.unsubscribeObservables();
+    }
+
+    private subscribeObservables(): void {
+        this.onEncounterUpdate = EncounterService.onEncounterUpdate.add('player-encounterUpdate', (data: Encounter) => {
+            this.setState({
+                currentEncounter: data
+            });
+        });
+
+        this.onSortUpdate = EncounterService.onSortUpdate.add('player-sortUpdate', (data: EncounterSortPlugin) => {
+            this.setState({
+                currentSortPlugin: data
+            });
+        });
+
+    }
+
+    private unsubscribeObservables(): void {
+        this.onEncounterUpdate.destroy();
+        this.onSortUpdate.destroy();
     }
 
     private isPlayerVisibile(target: Player, plys: Player[]): [boolean, number] {
@@ -29,7 +71,7 @@ export class PlayerContainer extends React.Component<PlayerContainerProps> {
         if(element == null) return [false, 0];
 
         let bounds: DOMRect = element.getBoundingClientRect();
-        let playerElementSize: number = 21; // In pixels
+        let playerElementSize: number = 20; // In pixels
         let currentSize: number = 0;
         let canSee: boolean = false;
         let visibleRows: number = 0;
@@ -52,7 +94,7 @@ export class PlayerContainer extends React.Component<PlayerContainerProps> {
         return (
             <PlayerElement index={index}
                 key={ply.getName()}
-                sorting={this.props.currentSortPlugin}
+                sorting={this.state.currentSortPlugin}
                 player={ply}
             />
         );
@@ -86,10 +128,10 @@ export class PlayerContainer extends React.Component<PlayerContainerProps> {
     public render(): any {
         let players: Player[] = null;
 
-        let encounter: Encounter = this.props.currentEncounter;
+        let encounter: Encounter = this.state.currentEncounter;
         if(encounter != null) players = encounter.getPlayers();
 
-        let classNames: string = `player-list ${this.props.isDragging || this.props.isEditing ? 'dragging': ''}`;
+        let classNames: string = `player-list ${this.props.isResizing ? 'resizing': ''}`;
 
         return(
             <div className={classNames} id='player-list-container'>

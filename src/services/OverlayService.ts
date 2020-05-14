@@ -29,16 +29,46 @@ export class OverlayService {
         return (window as any).OverlayPluginApi;
     }
 
-    public static loadMockData(): void {
-        this.onOverlayCombatUpdate.emit(this.parseCombatData(Mock));
+    public static loadMockData(maxPlys: number = 0, interval: number = 1000): void {
+        let mockData: any = JSON.parse(JSON.stringify(Mock)); // Quick clone
+        if(maxPlys > 0) mockData.Combatant = this.splitMockData(mockData.Combatant, maxPlys);
 
-        setInterval(() => {
-            let key: string = Object.keys(Mock.Combatant)[Math.getRandom(0, Object.keys(Mock.Combatant).length - 1)];
-            let ply: any = Mock.Combatant[key];
-            ply['dps'] = Math.getRandom(1, 10000).toString();
 
-            this.onOverlayCombatUpdate.emit(this.parseCombatData(Mock));
+        // Emit initial data
+        setTimeout(() => {
+            this.onOverlayCombatUpdate.emit(this.parseCombatData(mockData));
+
+            if(interval > 0){
+                setInterval(() => {
+                    let key: string = Object.keys(mockData.Combatant)[Math.getRandom(0, Object.keys(mockData.Combatant).length - 1)];
+                    let ply: any = mockData.Combatant[key];
+                    ply['dps'] = Math.getRandom(0, 10000).toString();
+
+                    this.onOverlayCombatUpdate.emit(this.parseCombatData(mockData));
+                }, interval);
+            }
         }, 1000);
+    }
+
+    private static splitMockData(mock: any, maxPlys: number): any {
+        let newMock: any = {};
+        for(let i: number = 0; i < maxPlys; i++) {
+            let key: string = Object.keys(mock)[i];
+            newMock[key] = mock[key];
+        }
+
+        return newMock;
+    }
+
+    private static getZonePercentage(combatRawData: any, ply: Player, dataId: string): number {
+        let totalZonePercentage: number = combatRawData.map(pl => parseFloat(pl[dataId])).reduce((a:number, b:number) => {
+            if(Number.isNaN(a)) a = 0;
+            if(Number.isNaN(b)) b = 0;
+
+            return a + b
+        });
+
+        return (ply.getDataNumber(dataId) * 100) / totalZonePercentage;
     }
 
     private static parseCombatData(data: any): [Encounter, Player[]] {
@@ -58,11 +88,13 @@ export class OverlayService {
         let combData: any = data['Combatant'];
 
         if(combData != null) {
-            Object.keys(combData).forEach((id: string) => {
-                let plyData: any = combData[id];
-                if(plyData == null) return;
+            let combatRawData: any = Object.values(combData);
 
-                let job: string = plyData['Job'];
+            Object.keys(combData).forEach((id: string) => {
+                let rawData: any = combData[id];
+                if(rawData == null) return;
+
+                let job: string = rawData['Job'];
                 if(job == null) return;
 
                 let ply: Player = new Player({
@@ -70,31 +102,16 @@ export class OverlayService {
                     job: SchemasService.getJobFromScheme(job.toUpperCase())
                 });
 
-                ply.updateData({
-                    dps: parseFloat(plyData['dps']),
-                    dps_perc: '0%',
+                ply.updateData(rawData);
 
-                    damage_perc: plyData['damage%'],
-                    damage_total: parseFloat(plyData['damage']),
-
-                    damage_blocked: parseFloat(plyData['damageShield']), // TODO: Verify
-                    damage_blocked_perc: plyData['BlockPct'], // TODO: Verify
-
-                    deaths: parseInt(plyData['deaths'], 10),
-
-                    max_heal_perc: plyData['healed%'],
-                    max_heal: parseFloat(plyData['healed']),
-
-                    hps: parseFloat(plyData['ENCHPS']),
-                    hps_perc: '0%',
-
-                    threat: plyData['threatstr'],
-                    threat_delta:plyData['threatdelta'],
-                });
+                /* Inject extra data */
+                ply.updateSingleData('dps_perc', this.getZonePercentage(combatRawData, ply, 'dps') + '%');
+                ply.updateSingleData('hps_perc', this.getZonePercentage(combatRawData, ply, 'ENCHPS') + '%');
 
                 plys.push(ply);
             });
         }
+
         return [encounter, plys];
     }
 

@@ -4,19 +4,28 @@ import { SortPlugin } from '../models/SortDecorator';
 
 @SortPlugin({
     id: 'DTAKEN',
-    icon: 'shield',
-    title: 'Damage Taken'
+    title: 'Damage Taken',
+
+    groupTitle: 'Defense'
 })
 export class DTAKEN implements EncounterSortPlugin {
     public getNumberString(ply: Player): string {
-        return `${ply.getTotalDamageBlocked()} (${ply.getTotalDamageBlocked(true)})`;
+        return `${this.getTotalDamageTaken(ply)} (${this.getTotalDamageTaken(ply, true)})`;
     }
 
     public sort(ply: Player[]): Player[] {
-        return ply.sort((a: Player, b: Player) => b.getDTAKEN() - a.getDTAKEN());
+        return ply.sort((a: Player, b: Player) => this.getDMGBLCK(b) - this.getDMGBLCK(a));
     }
 
     public getBarPercent(ply: Player): string {
-        return ply.getTotalDamageBlocked(true);
+        return this.getTotalDamageTaken(ply, true);
+    }
+
+    private getTotalDamageTaken(ply: Player, percent: boolean = false): any {
+        return percent ? ply.getDataString('BlockPct') : this.getDMGBLCK(ply); // TODO: FIX
+    }
+
+    private getDMGBLCK(ply: Player): number {
+        return ply.getDataNumber('damageShield');
     }
 }

@@ -4,7 +4,7 @@ import { PlayerJob } from '../interfaces/Player/PlayerJob';
 
 export class Player {
     private profile: PlayerProfile;
-    private data: PlayerData;
+    private data: any;
 
     constructor(profile: PlayerProfile) {
         this.profile = profile;
@@ -14,8 +14,12 @@ export class Player {
        return this.profile.name === 'YOU';
     }
 
-    public updateData(data: PlayerData): void {
+    public updateData(data: any): void {
         this.data = data;
+    }
+
+    public updateSingleData(dataId: string, data: any): void {
+        this.data[dataId] = data;
     }
 
     public getName(): string {
@@ -26,50 +30,18 @@ export class Player {
         return this.profile.job;
     }
 
-    public getDPS(): number {
-        if(Number.isNaN(this.data.dps)) return 0;
-        return parseFloat(this.data.dps.toString());
+    public getDataString(id: string): string {
+        return this.data[id];
     }
 
-    public getDTAKEN(): number {
-        if(Number.isNaN(this.data.damage_blocked)) return 0;
-        return this.data.damage_blocked;
-    }
+    public getDataNumber(id: string): number {
+        let data: number = parseFloat(this.data[id]);
+        if(Number.isNaN(data)) data = 0;
 
-    public getHPS(): number {
-        if(Number.isNaN(this.data.hps)) return 0;
-        return this.data.hps;
-    }
-
-    public getTotalDamageBlocked(percent: boolean = false): any {
-        return percent ? this.data.damage_blocked_perc : this.data.damage_blocked;
-    }
-
-    public getTotalHeal(percent: boolean = false): any {
-        return percent ? this.data.max_heal_perc : this.data.max_heal;
-    }
-
-    public getZoneDPSPercent(): string {
-        return this.data.dps_perc;
-    }
-
-    public getZoneHPSPercent(): string {
-        return this.data.hps_perc;
-    }
-
-    public getTotalDamage(percent: boolean = false): any {
-        return percent ? this.data.damage_perc : this.data.damage_total;
+        return data;
     }
 
     public getIcon(): string {
         return `./assets/icons/jobs/${this.profile.job.id}.png`;
-    }
-
-    public setZoneHPSPercent(percent: number): void {
-        this.data.hps_perc = `${percent}%`;
-    }
-
-    public setZoneDPSPercent(percent: number): void {
-        this.data.dps_perc = `${percent}%`;
     }
 }

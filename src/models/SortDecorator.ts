@@ -1,8 +1,6 @@
 'use strict';
 
-import { EncounterSortPlugin } from '../interfaces/Sort/EncounterSortPlugin';
 import { SortConfiguration } from '../interfaces/Sort/SortConfiguration';
-import { Player } from './Player';
 import { PluginService } from '../services/PluginService';
 
 export function SortPlugin(configuration: SortConfiguration): (constructor: any) => any {
@@ -21,8 +19,8 @@ export function SortPlugin(configuration: SortConfiguration): (constructor: any)
                 PluginService.registerPlugin(this, configuration.id);
             }
 
-            public getGroupID(): string {
-                return this.sortConfig.groupId;
+            public getGroupTitle(): string {
+                return this.sortConfig.groupTitle;
             }
 
             public getID(): string {
@@ -31,10 +29,6 @@ export function SortPlugin(configuration: SortConfiguration): (constructor: any)
 
             public getTitle(): string {
                 return this.sortConfig.title;
-            }
-
-            public getIcon(): string {
-                return this.sortConfig.icon;
             }
         };
     };

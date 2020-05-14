@@ -1,5 +1,7 @@
 
-.navbar-button {
+.icon {
+    position: relative;
+
     object-fit: contain;
     image-rendering: pixelated;
 
@@ -8,14 +10,17 @@
 
     padding: 0 2px;
 
-    cursor: pointer;
     filter: brightness(30%);
 }
 
-.navbar-button:hover {
+.icon.button {
+    cursor: pointer;
+}
+
+.icon:hover {
     filter:brightness(80%);
 }
 
-.navbar-button.active {
+.icon.active {
     filter:brightness(100%);
 }

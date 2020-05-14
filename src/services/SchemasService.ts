@@ -1,5 +1,7 @@
 import { PlayerJob } from '../interfaces/Player/PlayerJob';
+
 import * as default_schema from '../settings/color_schemas/default.json';
+import * as groups from '../settings/groups.json';
 
 export class SchemasService {
     public static schema: any;
@@ -19,5 +21,11 @@ export class SchemasService {
             id: id,
             name: schemaData.name
         }
+    }
+
+    public static getIconFromGroup(id: string): string {
+        let group: any = groups[id];
+        if(group == null || group['icon'] == null) return 'DEFAULT';
+        return group['icon'];
     }
 }

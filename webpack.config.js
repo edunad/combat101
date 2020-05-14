@@ -15,7 +15,7 @@ let config = {
     mode: production ? 'production' : 'development',
 
     devtool: 'source-map',
-    entry: ['./src/css/index.scss', './src/index.tsx'],
+    entry: ['./src/index.tsx'],
 
     output: {
         path: path.resolve(__dirname, './docs'),
@@ -27,7 +27,7 @@ let config = {
     },
 
     resolve: {
-        extensions: ['.ts', '.js', '.tsx', '.css', '.sass', '.scss', '.html'],
+        extensions: ['.ts', '.js', '.tsx', '.css', '.sass', '.scss'],
         modules: ['node_modules']
     },
 
@@ -86,7 +86,10 @@ let config = {
                 exclude: [/\.(spec|e2e)\.ts(x?)$/],
                 use: [
                     {
-                        loader: 'ts-loader'
+                        loader: 'ts-loader',
+                        options: {
+                            transpileOnly: true,
+                        }
                     }
                 ]
             }

@@ -53,10 +53,7 @@ export class PluginService {
     }
 
     private static getPluginGroupID(plugin: EncounterSortPlugin): string {
-        let groupId: string = plugin.getGroupID();
-        if(groupId == null) groupId = plugin.getID();
-
-        return groupId;
+        return plugin.getGroupTitle();
     }
 
     /**

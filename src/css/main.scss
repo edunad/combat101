@@ -7,6 +7,15 @@ body {
     width: 100%;
     margin: 0;
 
+    text-rendering: optimizeLegibility;
+    touch-action: manipulation;
+    -webkit-user-drag: none;
+    -ms-content-zooming: none;
+
+    word-wrap: break-word;
+    overscroll-behavior-y: none;
+    text-size-adjust: none;
+
     display: flex;
 }
 
@@ -17,20 +26,33 @@ h1,h2,h3,h4 {
 main {
     display: flex;
 
-	width: 300px;
-    height: 126px;
+	max-width: 260px;
+	min-width: 260px;
+    width: 260px;
+
+    height: 100px;
 
 	position: relative;
 
-    font-family: 'Accidental Presidency', sans-serif;
-    font-size: 14px;
-    font-weight: 100;
+	-webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+
+    -webkit-font-smoothing: antialiased !important;
+    text-shadow: #000 0px 1px 1px !important;
+
+    font-size: 12px !important;
+    font-family: 'Accidental Presidency' !important;
 
     text-shadow: 2px 2px #000;
 }
 
-*:not(input) {
-	user-select: none;
+* {
+    user-select: none;
+    box-sizing: border-box;
+
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
 }
 
 img {

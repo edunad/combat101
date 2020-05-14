@@ -1,0 +1,11 @@
+{
+    "Damage": {
+        "icon": "meteor"
+    },
+    "Defense": {
+        "icon": "shield"
+    },
+    "Health": {
+        "icon": "heal"
+    }
+}

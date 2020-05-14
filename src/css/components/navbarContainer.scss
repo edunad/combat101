@@ -1,4 +1,4 @@
-.navbar-sub-container,
+.navbar-tools,
 .navbar-container {
     display: flex;
     flex-direction: row;
@@ -7,80 +7,36 @@
     align-items: center;
 }
 
-.navbar-sub-container {
+.navbar-tools {
     flex-direction: row-reverse;
+    flex: 1;
+    margin-right: 3px;;
 }
 
 .navbar-container {
     height: 22px;
     background-color: #000000;
+
+    opacity: 0.7;
 }
 
 .navbar-title {
-    position: relative;
-    top: -1px;
-
-    padding-left: 5px;
-
-    flex: 1;
-}
-
-.navbar-mode {
     display: flex;
     align-items: center;
 
     padding: 0 5px;
     height: 12px;
 
+    font-size: 14px;
+    font-family: 'Accidental Presidency';
+
     background-color: white;
     color: black;
     text-shadow: none;
-}
 
-/*
-    SUBCONTAINER
-*/
-.navbar-sub-container {
-    height: 15px;
+    overflow: hidden;
 
-    flex-shrink: 0;
-
-    padding-right: 5px;
-    background-color: #101010;
-    border-bottom: 1px solid #000;
-}
-
-.navbar-sub-splitter {
-    position: relative;
-    top: -7px;
-
-    height: 100%;
-    width: 8px;
-
-    border-bottom: dashed 1px white;
-    border-right: dashed 1px white;
-}
-
-/*
-    TOOL
-*/
-.navbar-sub-toolbar-reverse,
-.navbar-sub-toolbar {
-    display: flex;
-    flex-direction: row;
-
-    flex: 1;
-    height: 100%;
-}
-
-.navbar-sub-toolbar-reverse {
-    flex-direction: row-reverse;
-}
-
-.navbar-sub-group {
-    padding: 0 5px;
-}
-
-.navbar-sub-group:not(:last-child) {
-    border-left: 2px solid #1d1d1d;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    word-break: break-all;
 }

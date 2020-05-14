@@ -3,8 +3,6 @@
     flex-direction: row;
     align-items: center;
 
-    border-bottom: 1px solid hsl(0, 0%, 0%);
-
     letter-spacing: 1px;
     font-size: 13px;
     height: 20px;
@@ -24,7 +22,7 @@
     flex-direction: row;
     flex: 1;
 
-    background-color:#000000dc;
+    background-color:#0000008a;
     align-items: center;
 
     height: 100%;
@@ -40,6 +38,11 @@
     flex: 1;
 
     text-transform: capitalize;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-all;
+    white-space: nowrap;
 
     color: white;
 

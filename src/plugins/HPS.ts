@@ -4,20 +4,24 @@ import { SortPlugin } from '../models/SortDecorator';
 
 @SortPlugin({
     id: 'HPS',
-    icon: 'heal_s',
     title: 'Heal per second',
-    groupId: 'HP'
+
+    groupTitle: 'Health'
 })
 export class HPS implements EncounterSortPlugin {
     public getNumberString(ply: Player): string {
-        return `${ply.getHPS()}`;
+        return `${this.getHPS(ply)}`;
     }
 
     public sort(ply: Player[]): Player[] {
-        return ply.sort((a: Player, b: Player) => b.getHPS() - a.getHPS());
+        return ply.sort((a: Player, b: Player) => this.getHPS(b) - this.getHPS(a));
     }
 
     public getBarPercent(ply: Player): string {
-        return ply.getZoneHPSPercent();
+        return ply.getDataString('hps_perc');
+    }
+
+    private getHPS(ply: Player): number {
+        return ply.getDataNumber('ENCHPS');
     }
 }

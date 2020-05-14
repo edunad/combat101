@@ -8,7 +8,6 @@ export interface EncounterSortPlugin {
 
     // INTERNALLY IMPLEMENTED //
     getID?(): string;
-    getGroupID?(): string;
     getTitle?(): string;
-    getIcon?(): string;
+    getGroupTitle?(): string;
 }
