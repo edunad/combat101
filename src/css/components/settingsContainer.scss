@@ -1,19 +1,11 @@
 .settings-container {
-    position: fixed;
-    top: 22px;
-
     display: flex;
     flex-direction: column;
 
     font-family: 'Accidental Presidency';
 
-	max-width: 245px;
-	min-width: 245px;
-    width: 245px;
-
     height: 100%;
-
-    z-index: 1000;
+    width: 100%;
 }
 
 .settings-container-item,
@@ -28,6 +20,10 @@
 
     background-color: #363636;
     position: relative;
+
+    word-break: break-all;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .settings-container-group-icon {
@@ -48,8 +44,6 @@
 
 .settings-container-item {
     height: 18px;
-    padding-left: 12px;
-
     background-color: #141414;
 }
 
@@ -70,6 +64,8 @@
 
     border-bottom: dashed 1px white;
     border-left: dashed 1px white;
+
+    margin-left: 12px;
 }
 
 .settings-container-item-title {

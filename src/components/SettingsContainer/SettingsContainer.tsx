@@ -8,25 +8,30 @@ import { PluginService } from '../../services/PluginService';
 import { Icon } from '../Icon/Icon';
 import { SchemasService } from '../../services/SchemasService';
 import { EncounterService } from '../../services/EncounterService';
+import { SettingsService } from '../../services/SettingsService';
 
 interface SettingsState {
     currentSortPlugin: EncounterSortPlugin;
+    isMinified: boolean;
 }
 
 export class SettingsContainer extends React.Component<any, SettingsState> {
     private onSortUpdate: HookSubscription;
+    private onMinifyChange: HookSubscription;
 
     constructor(props: any) {
         super(props);
 
         this.state = {
-            currentSortPlugin: null
+            currentSortPlugin: null,
+            isMinified: false
         };
     }
 
     public componentDidMount(): void {
         this.setState({
-            currentSortPlugin: EncounterService.getCurrentSortPlugin()
+            currentSortPlugin: EncounterService.getCurrentSortPlugin(),
+            isMinified: SettingsService.isMinified()
         });
 
         this.subscribeObservables();
@@ -43,10 +48,16 @@ export class SettingsContainer extends React.Component<any, SettingsState> {
             });
         });
 
+        this.onMinifyChange = SettingsService.onMinifyChange.add('settings-minifyUpdate', (data: boolean) => {
+            this.setState({
+                isMinified: data
+            });
+        });
     }
 
     private unsubscribeObservables(): void {
         this.onSortUpdate.destroy();
+        this.onMinifyChange.destroy();
     }
 
     private onSortClick(plugin: EncounterSortPlugin): void {
@@ -59,7 +70,7 @@ export class SettingsContainer extends React.Component<any, SettingsState> {
 
             return(
                 <div key={plugin.getID()} className='settings-container-item'>
-                    <div className='settings-container-item-icon'/>
+                    {this.state.isMinified ? null : <div className='settings-container-item-icon'/>}
                     <div
                         onClick={this.onSortClick.bind(this, plugin)}
                         className={`settings-container-item-title ${isActive ? 'active': ''}`}>

@@ -19,8 +19,6 @@ const MIN_WIDTH: number = 110;
 const MAX_WIDTH: number = 400;
 
 export class ResizeHandler extends React.Component<ResizeProps, ResizeState> {
-    private appElement: HTMLElement;
-
     private dragStartHeight: number;
     private dragStartPosY: number;
     private dragStartWidth: number;
@@ -37,12 +35,11 @@ export class ResizeHandler extends React.Component<ResizeProps, ResizeState> {
     }
 
     public componentDidMount(): void {
-        this.appElement = document.getElementById('app-container');
         this.registerListeners();
     }
 
     private startDrag($event: any): void {
-        let currentHeight: DOMRect = this.appElement.getBoundingClientRect();
+        let currentHeight: DOMRect = window['app-element'].getBoundingClientRect();
 
         this.dragStartPosY = $event.clientY;
         this.dragStartHeight = currentHeight.height;
@@ -82,7 +79,7 @@ export class ResizeHandler extends React.Component<ResizeProps, ResizeState> {
             if(gridSize != null) this.props.onResize();
         }
 
-        this.appElement.style[vertical ? 'height' : 'width'] = `${clampedValue}px`;
+        window['app-element'].style[vertical ? 'height' : 'width'] = `${clampedValue}px`;
     }
 
     private stopDrag(): void {

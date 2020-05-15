@@ -14,6 +14,7 @@ import { PlayerContainer } from '../PlayerContainer/PlayerContainer';
 import { ResizeHandler } from '../ResizeHandler/ResizeHandler';
 import { SettingsContainer } from '../SettingsContainer/SettingsContainer';
 import { Menu } from '../../enums/Menu';
+import { Settings } from '../../interfaces/Settings';
 
 // TODO : REVERSE ARROW
 
@@ -50,17 +51,22 @@ export class App extends React.Component<any, AppState>  {
         this.subscribeObservables();
 
         PluginService.initialize(() => {
-            let gameFound: boolean = OverlayService.initialize();
+            SettingsService.initialize();
+            OverlayService.initialize();
             SchemasService.initialize();
             EncounterService.initialize();
 
-            // Uncomment for mock data testing
-            if(!gameFound || !window['__PRODUCTION__']) {
+            if(!OverlayService.getAPI() || !window['__PRODUCTION__']) {
                 OverlayService.loadMockData(0, 0);
             }
 
+            let settings: Settings = SettingsService.getSettings();
+            window['app-element'].style.width = settings.width;
+            window['app-element'].style.height = settings.height;
+
             this.setState({
                 isLoaded: true,
+
                 isResizing: SettingsService.isResizing(),
                 currentMenu: SettingsService.getCurrentMenu()
             });
@@ -117,6 +123,10 @@ export class App extends React.Component<any, AppState>  {
 
     private onResize(): void {
         this.setState(this.state); // Force a update :P
+
+        SettingsService.getSettings().width = window['app-element'].style.width;
+        SettingsService.getSettings().height = window['app-element'].style.height;
+        SettingsService.save();
     }
 
     private renderApp(): any {

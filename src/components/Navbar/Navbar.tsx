@@ -89,11 +89,11 @@ export class Navbar extends React.Component<NavbarProps, NavbarState> {
 
     private toggleResize(): void {
         SettingsService.toggleResizeMode();
-        SettingsService.setMenu(Menu.DEFAULT);
     }
 
     private toggleSettings(): void {
         let menu: Menu = SettingsService.getCurrentMenu();
+
         if(menu === Menu.SETTINGS) {
             SettingsService.setMenu(Menu.DEFAULT);
         } else {

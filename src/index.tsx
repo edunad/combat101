@@ -5,4 +5,5 @@ import * as ReactDOM from 'react-dom';
 
 import { App } from './components/App/App';
 
-ReactDOM.render(<App />, document.getElementById('app-container'));
+window['app-element'] = document.getElementById('app-container');
+ReactDOM.render(<App />, window['app-element']);

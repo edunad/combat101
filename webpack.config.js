@@ -2,7 +2,6 @@
 const path = require('path');
 const glob = require("glob");
 
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
@@ -27,7 +26,7 @@ let config = {
     },
 
     resolve: {
-        extensions: ['.ts', '.js', '.tsx', '.css', '.sass', '.scss'],
+        extensions: ['.js', '.css', '.ts', '.tsx', '.sass', '.scss'],
         modules: ['node_modules']
     },
 
@@ -44,6 +43,13 @@ let config = {
 
     module: {
         rules: [
+            {
+                test: /\.(html|htm)?$/,
+                loader: 'file-loader',
+                options: {
+                    name: './[name].[ext]'
+                }
+            },
             {
                 test: /\.(png|jpg|gif)$/i,
                 use: [
@@ -97,9 +103,6 @@ let config = {
     },
 
     plugins: [
-        new HtmlWebpackPlugin({
-            template: './src/index.html'
-        }),
         new MiniCssExtractPlugin({
             filename: './styles.css',
             chunkFilename: './styles.css'

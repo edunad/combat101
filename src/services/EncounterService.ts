@@ -6,6 +6,7 @@ import { PluginService } from './PluginService';
 import { Encounter } from '../models/Encounter';
 import { Player } from '../models/Player';
 import { EncounterSortPlugin } from '../interfaces/Sort/EncounterSortPlugin';
+import { SettingsService } from './SettingsService';
 
 export class EncounterService {
     public static onEncounterUpdate: Hook<Encounter> = new Hook<Encounter>();
@@ -16,9 +17,13 @@ export class EncounterService {
     private static currentSortPlugin: EncounterSortPlugin;
 
     public static initialize(): void {
-        this.currentEncounter = null;
-        this.currentSortPlugin = Object.values(PluginService.getPlugins())[0]; // Todo: Load from save
+        let savedID: string = SettingsService.getSettings().selectedSortID;
+        let plugin: EncounterSortPlugin = PluginService.getPlugin(savedID);
 
+        if(plugin == null) plugin = PluginService.getPluginByIndex(0);
+        this.currentSortPlugin = plugin;
+
+        this.saveCurrentSort();
         this.bindObservables();
     }
 
@@ -32,6 +37,7 @@ export class EncounterService {
         this.currentSortPlugin = plugin;
 
         this.updateEncounter();
+        this.saveCurrentSort();
         this.onSortUpdate.emit(this.currentSortPlugin);
     }
 
@@ -52,6 +58,11 @@ export class EncounterService {
         });
 
         return found;
+    }
+
+    private static saveCurrentSort(): void {
+        SettingsService.getSettings().selectedSortID = this.currentSortPlugin.getID();
+        SettingsService.save();
     }
 
     private static updateEncounter(): void {

@@ -21,9 +21,8 @@ export class OverlayService {
     public static onOverlayDataUpdate: Hook<any> = new Hook<any>();
     public static onOverlayCombatUpdate: Hook<[Encounter, Player[]]> = new Hook<[Encounter, Player[]]>();
 
-    public static initialize(): boolean {
+    public static initialize(): void {
         this.registerListeners();
-        return this.getAPI() != null;
     }
 
     public static getAPI(): any {
