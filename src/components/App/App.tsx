@@ -57,7 +57,7 @@ export class App extends React.Component<any, AppState>  {
             SchemasService.initialize();
             EncounterService.initialize();
 
-            if(!OverlayService.getAPI() || !__PRODUCTION__) {
+            if(OverlayService.getAPI() == null || !__PRODUCTION__) {
                 OverlayService.loadMockData(0, 1200);
             }
 
