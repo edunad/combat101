@@ -55,14 +55,15 @@ export class App extends React.Component<any, AppState>  {
         this.subscribeObservables();
 
         PluginService.initialize(() => {
+            if(OverlayService.getAPI() == null || !__PRODUCTION__) {
+                OverlayService.loadMockData(0, 1000);
+            } else {
+                OverlayService.initialize();
+            }
+
             SettingsService.initialize();
-            OverlayService.initialize();
             SchemasService.initialize();
             EncounterService.initialize();
-
-            if(OverlayService.getAPI() == null || !__PRODUCTION__) {
-                OverlayService.loadMockData(0, 1200);
-            }
 
             let settings: Settings = SettingsService.getSettings();
             window['app-element'].style.width = settings.width;
@@ -109,27 +110,13 @@ export class App extends React.Component<any, AppState>  {
         this.onOrientationChange.destroy();
     }
 
-    private playerContainerRoute(): any {
-        return (
-            <PlayerContainer
-                isResizing={this.state.isResizing}
-            />
-        );
-    }
-
-    private settingsRoute(): any {
-        return (
-            <SettingsContainer/>
-        );
-    }
-
     private renderMenu(): any {
         switch(this.state.currentMenu) {
             case Menu.SETTINGS:
-                return this.settingsRoute();
+                return <SettingsContainer/>;
             case Menu.DEFAULT:
             default:
-                return this.playerContainerRoute();
+                return <PlayerContainer/>;
         }
     }
 
@@ -175,8 +162,9 @@ export class App extends React.Component<any, AppState>  {
      * @returns {any}
      */
     public render(): any {
+        let classes: string = `app-container ${this.state.isResizing ? 'resizing' : ''} ${this.state.orientationInverted ? 'inverted' : ''}`;
         return (
-            <div className={`app-container ${this.state.orientationInverted ? 'inverted' : ''}`}>
+            <div className={classes}>
                 {this.renderApp()}
             </div>
         );

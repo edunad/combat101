@@ -11,22 +11,18 @@ import { EncounterSortPlugin } from '../../interfaces/Sort/EncounterSortPlugin';
 import { HookSubscription } from '@edunad/hooks';
 import { SettingsService } from '../../services/SettingsService';
 
-interface PlayerContainerProps {
-    isResizing: boolean;
-}
-
 interface PlayerContainerState {
     currentEncounter: Encounter;
     currentSortPlugin: EncounterSortPlugin;
     isMinified: boolean;
 }
 
-export class PlayerContainer extends React.Component<PlayerContainerProps, PlayerContainerState> {
+export class PlayerContainer extends React.Component<any, PlayerContainerState> {
     private onEncounterUpdate: HookSubscription;
     private onSortUpdate: HookSubscription;
     private onMinifyUpdate: HookSubscription;
 
-    constructor(props: PlayerContainerProps) {
+    constructor(props: any) {
         super(props);
         this.state = {
             currentEncounter: null,
@@ -41,7 +37,7 @@ export class PlayerContainer extends React.Component<PlayerContainerProps, Playe
             currentEncounter: EncounterService.getCurrentEncounter(),
             currentSortPlugin: EncounterService.getCurrentSortPlugin(),
 
-            isMinified: SettingsService.isMinified(),
+            isMinified: SettingsService.isMinified()
         });
 
         this.subscribeObservables();
@@ -78,12 +74,9 @@ export class PlayerContainer extends React.Component<PlayerContainerProps, Playe
     }
 
     private isPlayerVisibile(target: Player, plys: Player[]): [boolean, number] {
-        let element: HTMLElement = document.getElementById('player-list-container');
-        if(element == null) return [false, 0];
-
-        let bounds: DOMRect = element.getBoundingClientRect();
+        let bounds: DOMRect = window['app-container'].getBoundingClientRect();
         let playerElementSize: number = 20; // In pixels
-        let currentSize: number = 0;
+        let currentSize: number = 22;
         let canSee: boolean = false;
         let visibleRows: number = 0;
 
@@ -139,14 +132,11 @@ export class PlayerContainer extends React.Component<PlayerContainerProps, Playe
 
     public render(): any {
         let players: Player[] = null;
-
         let encounter: Encounter = this.state.currentEncounter;
         if(encounter != null) players = encounter.getPlayers();
 
-        let classNames: string = `player-list ${this.props.isResizing ? 'resizing': ''}`;
-
         return(
-            <div className={classNames} id='player-list-container'>
+            <div className='player-list' id='player-list-container'>
                 {players != null && players.length > 0 ? this.renderPlayerList(players) : null}
             </div>
         );

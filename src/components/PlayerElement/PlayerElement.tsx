@@ -32,9 +32,9 @@ export class PlayerElement extends React.Component<PlayerProps> {
         let percent: string = this.props.sorting.getBarPercent(user);
 
         return(
-            <div className={`player-container ${user.isLocalPlayer() ? 'you' : ''}`}>
+            <div className='player-container'>
                 { !this.props.minified ? <img className='player-icon' src={user.getIcon()}/> : null}
-                <div className='player-info-container'>
+                <div className={`player-info-container ${user.isLocalPlayer() ? 'you' : ''}`}>
                     <Bar color={color} percent={percent}/>
 
                     <div className='player-position'>{this.props.index}.</div>

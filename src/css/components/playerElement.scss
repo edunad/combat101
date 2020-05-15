@@ -10,10 +10,6 @@
     height: 20px;
 }
 
-.player-container.you {
-    background-color:rgba(44, 1, 1, 0.8);
-}
-
 .player-info-container {
     display: flex;
     flex: 1;
@@ -29,6 +25,10 @@
     background-color: rgba(1,1,1,0.3);
 
     overflow: hidden;
+}
+
+.player-info-container.you {
+    background-color:rgba(44, 1, 1, 0.5);
 }
 
 .player-position {

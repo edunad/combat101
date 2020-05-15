@@ -1,8 +1,7 @@
 .player-list {
-    height: 100%;
-    overflow: hidden;
-}
+    display: flex;
+    flex-direction: column;
 
-.player-list.resizing {
-    background-color: rgba(1,1,1,0.5);
+    margin-bottom: -2px;
+    overflow: hidden;
 }
