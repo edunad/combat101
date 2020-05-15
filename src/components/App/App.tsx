@@ -65,9 +65,6 @@ export class App extends React.Component<any, AppState>  {
             SchemasService.initialize();
             EncounterService.initialize();
 
-            let settings: Settings = SettingsService.getSettings();
-            window['app-element'].style.width = settings.width;
-            window['app-element'].style.height = settings.height;
 
             this.setState({
                 isLoaded: true,
