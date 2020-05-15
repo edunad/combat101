@@ -3,3 +3,6 @@ Damage / Healing tracker
 
 ## Installation
 Add `https://edunad.github.io/combat101` to your ACT Plugin.
+
+## Screenshots
+<TODO>
