@@ -28,6 +28,8 @@ export class SettingsService {
         } else {
             this.settings = rawSettings;
         }
+
+        this.applySavedSize();
     }
 
     public static save(): void {
@@ -105,6 +107,13 @@ export class SettingsService {
         let data: any = this.getPersist();
         if (data == null || data[key] == null) return null;
         return data[key];
+    }
+
+    private static applySavedSize(): void {
+        let settings: Settings = SettingsService.getSettings();
+
+        window['app-element'].style.width = settings.width;
+        window['app-element'].style.height = settings.height;
     }
 
     private static defaultSettings(): Settings {
