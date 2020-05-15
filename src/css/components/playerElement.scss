@@ -30,7 +30,7 @@
 }
 
 .player-info-container.you {
-    color:rgb(255, 145, 0);
+    text-shadow: 0px 0px 6px rgb(255, 238, 0);
 }
 
 .player-position {
@@ -38,6 +38,8 @@
 
     position: relative;
     top: 1px;
+
+    z-index: 1;
 }
 
 .player-name {
@@ -48,10 +50,10 @@
     word-break: break-all;
     white-space: nowrap;
 
-    color: white;
-
     position: relative;
     top: 1px;
+
+    z-index: 1;
 }
 
 .player-icon {
@@ -75,4 +77,6 @@
 
     position: relative;
     top: 1px;
+
+    z-index: 1;
 }

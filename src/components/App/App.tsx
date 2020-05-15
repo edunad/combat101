@@ -123,7 +123,6 @@ export class App extends React.Component<any, AppState>  {
     private onResize(): void {
         this.setState(this.state); // Force a update :P
 
-        SettingsService.getSettings().width = window['app-element'].style.width;
         SettingsService.getSettings().height = window['app-element'].style.height;
         SettingsService.save();
     }

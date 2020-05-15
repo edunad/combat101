@@ -15,8 +15,7 @@ interface ResizeState {
     isDragging: boolean;
 }
 
-const MINIFIED_WIDTH: number = 160;
-const MIN_WIDTH: number = 110;
+const MIN_WIDTH: number = 100;
 const MAX_WIDTH: number = 400;
 
 export class ResizeHandler extends React.Component<ResizeProps, ResizeState> {
@@ -73,7 +72,7 @@ export class ResizeHandler extends React.Component<ResizeProps, ResizeState> {
         if(gridSize != null) grid = gridSize * Math.round(newSize / gridSize);
 
         let clampedValue: number = Math.clamp(grid, minSize, maxSize);
-        if(!vertical) SettingsService.setMinifiedMode(clampedValue <= MINIFIED_WIDTH);
+        if(!vertical) SettingsService.updateAppWidth();
 
         if(clampedValue !== this.oldSizeValue){
             this.oldSizeValue = clampedValue;

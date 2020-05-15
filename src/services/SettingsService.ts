@@ -4,7 +4,10 @@ import { Settings } from '../interfaces/Settings';
 import { PluginService } from './PluginService';
 
 const SAVE_VERSION: string = '1.0.0';
+
 export class SettingsService {
+    public static MINIFIED_WIDTH: number = 160;
+
     public static onResizeModeUpdate: Hook<boolean> = new Hook<boolean>();
     public static onMenuChange: Hook<Menu> = new Hook<Menu>();
     public static onMinifyChange: Hook<boolean> = new Hook<boolean>();
@@ -13,7 +16,6 @@ export class SettingsService {
 
     private static resizeMode: boolean = false;
     private static currentMenu: Menu = Menu.DEFAULT;
-    private static minifiedMode: boolean = false;
 
     private static settings: Settings;
 
@@ -42,7 +44,6 @@ export class SettingsService {
 
     public static setOrientationInverted(inverted: boolean): void {
         if(this.settings.orientationInverted == inverted) return;
-
         this.settings.orientationInverted = inverted;
         this.save();
 
@@ -69,7 +70,7 @@ export class SettingsService {
     }
 
     public static isMinified(): boolean {
-        return this.minifiedMode;
+        return (parseFloat(this.settings.width.replace('px', '')) <= this.MINIFIED_WIDTH);
     }
 
     public static getCurrentMenu(): Menu {
@@ -83,11 +84,13 @@ export class SettingsService {
         this.onMenuChange.emit(menu);
     }
 
-    public static setMinifiedMode(minified: boolean): void {
-        if(minified === this.minifiedMode) return;
+    public static updateAppWidth(): void {
+        let oldMinify: boolean = this.isMinified();
+        SettingsService.getSettings().width = window['app-element'].style.width;
 
-        this.minifiedMode = minified;
-        this.onMinifyChange.emit(minified);
+        if(this.isMinified() != oldMinify) {
+            this.onMinifyChange.emit(!oldMinify);
+        }
     }
 
     public static storeInPersist(key: string, value: any): void {
