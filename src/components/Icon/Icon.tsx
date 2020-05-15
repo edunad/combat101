@@ -5,6 +5,7 @@ import * as React from 'react';
 interface IconProps {
     icon: string;
     active?: boolean;
+    style?: any;
     onClick?: () => void;
 }
 
@@ -24,6 +25,7 @@ export class Icon extends React.Component<IconProps> {
 
         return(
             <img
+                style={this.props.style}
                 className={`icon ${this.props.active ? 'active' : ''} ${isButton ? 'button': ''}`}
                 onClick={this.props?.onClick}
                 src={icon}

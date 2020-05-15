@@ -40,7 +40,8 @@ export class PlayerContainer extends React.Component<PlayerContainerProps, Playe
         this.setState({
             currentEncounter: EncounterService.getCurrentEncounter(),
             currentSortPlugin: EncounterService.getCurrentSortPlugin(),
-            isMinified: SettingsService.isMinified()
+
+            isMinified: SettingsService.isMinified(),
         });
 
         this.subscribeObservables();

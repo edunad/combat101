@@ -27,6 +27,10 @@ export function SortPlugin(configuration: SortConfiguration): (constructor: any)
                 return this.sortConfig.id;
             }
 
+            public getSmallTitle(): string {
+                return this.sortConfig.smallTitle;
+            }
+
             public getTitle(): string {
                 return this.sortConfig.title;
             }

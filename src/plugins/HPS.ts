@@ -5,7 +5,7 @@ import { SortPlugin } from '../models/SortDecorator';
 @SortPlugin({
     id: 'HPS',
     title: 'Heal per second',
-
+    smallTitle: 'HP/s',
     groupTitle: 'Health'
 })
 export class HPS implements EncounterSortPlugin {

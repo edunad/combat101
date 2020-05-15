@@ -19,13 +19,16 @@ interface NavbarProps {
 interface NavbarState {
     currentEncounter: Encounter;
     currentSortPlugin: EncounterSortPlugin;
+
     isMinified: boolean;
+    orientationInverted: boolean;
 }
 
 export class Navbar extends React.Component<NavbarProps, NavbarState> {
     private onEncounterUpdate: HookSubscription;
     private onSortUpdate: HookSubscription;
     private onMinifyUpdate: HookSubscription;
+    private onOrientationChange: HookSubscription;
 
     constructor(props: NavbarProps) {
         super(props);
@@ -33,7 +36,9 @@ export class Navbar extends React.Component<NavbarProps, NavbarState> {
         this.state = {
             currentEncounter: null,
             currentSortPlugin: null,
-            isMinified: false
+
+            isMinified: false,
+            orientationInverted: false
         };
     }
 
@@ -41,7 +46,8 @@ export class Navbar extends React.Component<NavbarProps, NavbarState> {
         this.setState({
             currentEncounter: EncounterService.getCurrentEncounter(),
             currentSortPlugin: EncounterService.getCurrentSortPlugin(),
-            isMinified: SettingsService.isMinified()
+            isMinified: SettingsService.isMinified(),
+            orientationInverted: SettingsService.isOrientationInverted()
         });
 
         this.subscribeObservables();
@@ -69,12 +75,19 @@ export class Navbar extends React.Component<NavbarProps, NavbarState> {
                 isMinified: data
             });
         });
+
+        this.onOrientationChange = SettingsService.onOrientationChange.add('navbar-orientationUpdate', (data: boolean) => {
+            this.setState({
+                orientationInverted: data
+            });
+        });
     }
 
     private unsubscribeObservables(): void {
         this.onEncounterUpdate.destroy();
         this.onSortUpdate.destroy();
         this.onMinifyUpdate.destroy();
+        this.onOrientationChange.destroy();
     }
 
     private getTime(): string {
@@ -87,8 +100,17 @@ export class Navbar extends React.Component<NavbarProps, NavbarState> {
         return this.state.currentSortPlugin.getTitle();
     }
 
+    private getSmallTitle(): string {
+        if(this.state.currentSortPlugin == null) return 'UNK';
+        return this.state.currentSortPlugin.getSmallTitle();
+    }
+
     private toggleResize(): void {
         SettingsService.toggleResizeMode();
+    }
+
+    private toggleOrientation(): void {
+        SettingsService.toggleOrientation();
     }
 
     private toggleSettings(): void {
@@ -111,6 +133,11 @@ export class Navbar extends React.Component<NavbarProps, NavbarState> {
                     active={this.props.isResizing}
                 />
                 <Icon
+                    icon={'orientation'}
+                    onClick={this.toggleOrientation.bind(this)}
+                    style={{transform: this.state.orientationInverted ? 'rotateZ(180deg)' : 'none'}}
+                />
+                <Icon
                     icon={SchemasService.getIconFromGroup(this.state.currentSortPlugin.getGroupTitle())}
                     onClick={this.toggleSettings.bind(this)}
                     active={this.props.currentMenu == Menu.SETTINGS}
@@ -121,7 +148,7 @@ export class Navbar extends React.Component<NavbarProps, NavbarState> {
 
     public getTitle(): string {
         if(this.state.isMinified) {
-            return `${this.getPluginTitle()}`
+            return `${this.getSmallTitle()}`
         } else {
             return `${this.getTime()} - ${this.getPluginTitle()}`
         }

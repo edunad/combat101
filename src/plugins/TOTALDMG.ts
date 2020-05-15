@@ -5,7 +5,7 @@ import { SortPlugin } from '../models/SortDecorator';
 @SortPlugin({
     id: 'TOTALDMG',
     title: 'Total Damage',
-
+    smallTitle: 'DMG+',
     groupTitle: 'Damage'
 })
 export class TOTALDMG implements EncounterSortPlugin {

@@ -10,4 +10,5 @@ export interface EncounterSortPlugin {
     getID?(): string;
     getTitle?(): string;
     getGroupTitle?(): string;
+    getSmallTitle?(): string;
 }

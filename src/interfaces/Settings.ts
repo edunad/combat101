@@ -3,4 +3,5 @@ export interface Settings {
     height: string;
 
     selectedSortID: string;
+    orientationInverted: boolean;
 }

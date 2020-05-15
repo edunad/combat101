@@ -6,6 +6,7 @@ import { SortPlugin } from '../models/SortDecorator';
     id: 'TOTALHP',
     title: 'Total Healing',
 
+    smallTitle: 'HP+',
     groupTitle: 'Health'
 })
 export class TOTALHP implements EncounterSortPlugin {

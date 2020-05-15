@@ -5,7 +5,7 @@ import { SortPlugin } from '../models/SortDecorator';
 @SortPlugin({
     id: 'DPS',
     title: 'Damage per second',
-
+    smallTitle: 'DMG/s',
     groupTitle: 'Damage'
 })
 export class DPS implements EncounterSortPlugin {

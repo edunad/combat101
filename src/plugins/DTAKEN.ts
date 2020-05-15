@@ -6,6 +6,7 @@ import { SortPlugin } from '../models/SortDecorator';
     id: 'DTAKEN',
     title: 'Damage Taken',
 
+    smallTitle: 'DEF',
     groupTitle: 'Defense'
 })
 export class DTAKEN implements EncounterSortPlugin {

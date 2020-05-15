@@ -16,7 +16,6 @@ import { SettingsContainer } from '../SettingsContainer/SettingsContainer';
 import { Menu } from '../../enums/Menu';
 import { Settings } from '../../interfaces/Settings';
 
-// TODO : REVERSE ARROW
 declare var __PRODUCTION__: boolean;
 
 /**
@@ -26,6 +25,7 @@ declare var __PRODUCTION__: boolean;
 interface AppState {
     isLoaded: boolean;
     isResizing: boolean;
+    orientationInverted: boolean;
 
     currentMenu: Menu;
 };
@@ -37,6 +37,7 @@ interface AppState {
 export class App extends React.Component<any, AppState>  {
     private onMenuChange: HookSubscription;
     private onResizeModeUpdate: HookSubscription;
+    private onOrientationChange: HookSubscription;
 
     constructor(props: any) {
         super(props);
@@ -44,6 +45,8 @@ export class App extends React.Component<any, AppState>  {
         this.state = {
             isLoaded: false,
             isResizing: false,
+            orientationInverted: false,
+
             currentMenu: Menu.DEFAULT
         }
     }
@@ -69,7 +72,8 @@ export class App extends React.Component<any, AppState>  {
                 isLoaded: true,
 
                 isResizing: SettingsService.isResizing(),
-                currentMenu: SettingsService.getCurrentMenu()
+                currentMenu: SettingsService.getCurrentMenu(),
+                orientationInverted: SettingsService.isOrientationInverted()
             });
         });
     }
@@ -91,11 +95,18 @@ export class App extends React.Component<any, AppState>  {
                 isResizing: data
             });
         });
+
+        this.onOrientationChange = SettingsService.onOrientationChange.add('orientationUpdate', (data: boolean) => {
+            this.setState({
+                orientationInverted: data
+            });
+        });
     }
 
     private unsubscribeObservables(): void {
         this.onMenuChange.destroy();
         this.onResizeModeUpdate.destroy();
+        this.onOrientationChange.destroy();
     }
 
     private playerContainerRoute(): any {
@@ -152,6 +163,7 @@ export class App extends React.Component<any, AppState>  {
                     vertical={true}
                     enabled={this.state.isResizing}
                     onResize={this.onResize.bind(this)}
+                    inverted={this.state.orientationInverted}
                 />
             </>
         );
@@ -164,7 +176,7 @@ export class App extends React.Component<any, AppState>  {
      */
     public render(): any {
         return (
-            <div className='app-container' >
+            <div className={`app-container ${this.state.orientationInverted ? 'inverted' : ''}`}>
                 {this.renderApp()}
             </div>
         );

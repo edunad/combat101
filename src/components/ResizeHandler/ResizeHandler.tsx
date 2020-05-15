@@ -6,6 +6,7 @@ import { SettingsService } from '../../services/SettingsService';
 interface ResizeProps {
     enabled: boolean;
     vertical: boolean;
+    inverted?: boolean;
 
     onResize: () => void;
 }
@@ -115,7 +116,7 @@ export class ResizeHandler extends React.Component<ResizeProps, ResizeState> {
         if(!this.props.enabled) return null;
         return(
             <div
-                className={`resize-handler ${this.props.vertical ? '' : 'vertical'}`}
+                className={`resize-handler${this.props.vertical ? '' : '-vertical'} ${this.props.inverted ? 'inverted' : ''}`}
                 onMouseDown={this.startDrag.bind(this)}/>
         );
     }
