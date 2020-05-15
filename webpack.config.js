@@ -8,17 +8,8 @@ const CopyPlugin = require('copy-webpack-plugin');
 const RemovePlugin = require('remove-files-webpack-plugin');
 
 const webpack = require('webpack');
-const production = process.env.NODE_ENV != null && process.env.NODE_ENV.trim() === 'production';
-
-if(production) {
-    console.warn('=================================');
-    console.warn('======== PRODUCTION MODE ========');
-    console.warn('=================================');
-}
 
 let config = {
-    mode: production ? 'production' : 'development',
-
     devtool: 'source-map',
     entry: ['./src/index.tsx'],
 
@@ -139,34 +130,52 @@ function findPlugins(callback) {
     });
 }
 
-module.exports = new Promise(function (resolve, reject) {
-    findPlugins((locations) => {
-        console.warn(`==== PLUGINS FOUND :`);
-        console.warn(locations);
-        console.warn(`============= ======`)
+module.exports = (env, argv) => {
+    const production = argv.mode === 'production';
 
-        config.plugins.push(
-            new webpack.DefinePlugin({
-                '__PLUGINS__': JSON.stringify(locations),
-                '__PRODUCTION__': production
-            })
-        );
+    if(production) {
+        console.warn("\n  ,-.       _,---._ __  / \\");
+        console.warn(" /  )    .-'       `./ /   \\");
+        console.warn("(  (   ,'            `/    /|");
+        console.warn(" \  `-'             \\'\\   / |");
+        console.warn("  `.              ,  \\ \\ /  |");
+        console.warn("   /`.          ,'-`----Y   |");
+        console.warn("  (            ;        |   '");
+        console.warn("  |  ,-.    ,-'         |  /");
+        console.warn("  |  | (   | PRODUCTION | /");
+        console.warn("  )  |  \  `.___MODE____|/");
+        console.warn("  `--'   `--'\n");
+    }
 
-        if(production){
-            config.plugins.push(new RemovePlugin({
-                before: {
-                    include: [
-                        './docs'
-                    ]
-                },
-                watch: {
-                    include: [
-                        './docs'
-                    ]
-                }
-            }));
-        }
+    return new Promise(function (resolve, reject) {
+        findPlugins((locations) => {
+            console.warn(`==== PLUGINS FOUND :`);
+            console.warn(locations);
+            console.warn(`============= ======`)
 
-        return resolve(config);
+            config.plugins.push(
+                new webpack.DefinePlugin({
+                    '__PLUGINS__': JSON.stringify(locations),
+                    '__PRODUCTION__': production
+                })
+            );
+
+            if(production){
+                config.plugins.push(new RemovePlugin({
+                    before: {
+                        include: [
+                            './docs'
+                        ]
+                    },
+                    watch: {
+                        include: [
+                            './docs'
+                        ]
+                    }
+                }));
+            }
+
+            return resolve(config);
+        });
     });
-});
+};
