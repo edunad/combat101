@@ -10,6 +10,12 @@ const RemovePlugin = require('remove-files-webpack-plugin');
 const webpack = require('webpack');
 const production = process.env.NODE_ENV != null && process.env.NODE_ENV.trim() === 'production';
 
+if(production) {
+    console.warn('=================================');
+    console.warn('======== PRODUCTION MODE ========');
+    console.warn('=================================');
+}
+
 let config = {
     mode: production ? 'production' : 'development',
 
