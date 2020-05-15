@@ -17,6 +17,7 @@ import { Menu } from '../../enums/Menu';
 import { Settings } from '../../interfaces/Settings';
 
 // TODO : REVERSE ARROW
+declare var __PRODUCTION__: boolean;
 
 /**
  * The AppState interface
@@ -56,8 +57,8 @@ export class App extends React.Component<any, AppState>  {
             SchemasService.initialize();
             EncounterService.initialize();
 
-            if(!OverlayService.getAPI() || !window['__PRODUCTION__']) {
-                OverlayService.loadMockData(0, 0);
+            if(!OverlayService.getAPI() || !__PRODUCTION__) {
+                OverlayService.loadMockData(0, 1200);
             }
 
             let settings: Settings = SettingsService.getSettings();
