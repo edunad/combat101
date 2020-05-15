@@ -22,10 +22,10 @@ export class DTAKEN implements EncounterSortPlugin {
     }
 
     private getTotalDamageTaken(ply: Player, percent: boolean = false): any {
-        return percent ? ply.getDataString('BlockPct') : this.getDMGBLCK(ply); // TODO: FIX
+        return percent ? ply.getDataString('damageTaken_perc') : this.getDMGBLCK(ply); // TODO: FIX
     }
 
     private getDMGBLCK(ply: Player): number {
-        return ply.getDataNumber('damageShield');
+        return ply.getDataNumber('damagetaken');
     }
 }

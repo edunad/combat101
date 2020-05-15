@@ -21,8 +21,9 @@ export class OverlayService {
     public static onOverlayDataUpdate: Hook<any> = new Hook<any>();
     public static onOverlayCombatUpdate: Hook<[Encounter, Player[]]> = new Hook<[Encounter, Player[]]>();
 
-    public static initialize(): void {
+    public static initialize(): boolean {
         this.registerListeners();
+        return this.getAPI() != null;
     }
 
     public static getAPI(): any {
@@ -68,7 +69,7 @@ export class OverlayService {
             return a + b
         });
 
-        return (ply.getDataNumber(dataId) * 100) / totalZonePercentage;
+        return Math.floor((ply.getDataNumber(dataId) * 100) / totalZonePercentage);
     }
 
     private static parseCombatData(data: any): [Encounter, Player[]] {
@@ -91,6 +92,8 @@ export class OverlayService {
             let combatRawData: any = Object.values(combData);
 
             Object.keys(combData).forEach((id: string) => {
+                if(id === 'Limit Break') return; // Ignore 'Limit Break'
+
                 let rawData: any = combData[id];
                 if(rawData == null) return;
 
@@ -105,8 +108,9 @@ export class OverlayService {
                 ply.updateData(rawData);
 
                 /* Inject extra data */
-                ply.updateSingleData('dps_perc', this.getZonePercentage(combatRawData, ply, 'dps') + '%');
+                ply.updateSingleData('dps_perc', this.getZonePercentage(combatRawData, ply, 'encdps') + '%');
                 ply.updateSingleData('hps_perc', this.getZonePercentage(combatRawData, ply, 'ENCHPS') + '%');
+                ply.updateSingleData('damageTaken_perc', this.getZonePercentage(combatRawData, ply, 'damagetaken') + '%');
 
                 plys.push(ply);
             });

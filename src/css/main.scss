@@ -26,10 +26,8 @@ h1,h2,h3,h4 {
 main {
     display: flex;
 
-	max-width: 260px;
-	min-width: 260px;
-    width: 260px;
-
+    /* Default starting sizes */
+    width: 245px;
     height: 100px;
 
 	position: relative;
@@ -42,8 +40,6 @@ main {
 
     font-size: 12px !important;
     font-family: 'Accidental Presidency' !important;
-
-    text-shadow: 2px 2px #000;
 }
 
 * {

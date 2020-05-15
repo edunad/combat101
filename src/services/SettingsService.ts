@@ -4,9 +4,11 @@ import { Menu } from '../enums/Menu';
 export class SettingsService {
     public static onResizeModeUpdate: Hook<boolean> = new Hook<boolean>();
     public static onMenuChange: Hook<Menu> = new Hook<Menu>();
+    public static onMinifyChange: Hook<boolean> = new Hook<boolean>();
 
     private static resizeMode: boolean = false;
     private static currentMenu: Menu = Menu.DEFAULT;
+    private static minifiedMode: boolean = false;
 
     public static toggleResizeMode(): void {
         this.resizeMode = !this.resizeMode;
@@ -15,6 +17,10 @@ export class SettingsService {
 
     public static isResizing(): boolean {
         return this.resizeMode;
+    }
+
+    public static isMinified(): boolean {
+        return this.minifiedMode;
     }
 
     public static getCurrentMenu(): Menu {
@@ -26,5 +32,12 @@ export class SettingsService {
 
         this.currentMenu = menu;
         this.onMenuChange.emit(menu);
+    }
+
+    public static setMinifiedMode(minified: boolean): void {
+        if(minified === this.minifiedMode) return;
+
+        this.minifiedMode = minified;
+        this.onMinifyChange.emit(minified);
     }
 }

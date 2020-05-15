@@ -19,3 +19,14 @@
     position: relative;
     bottom: -7px;
 }
+
+.resize-handler.vertical {
+    width: 15px;
+    height: calc(100% - 22px);
+
+    right: 0;
+    top: 22px;
+    left: unset;
+
+    cursor: e-resize;
+}

@@ -9,8 +9,7 @@ import { EncounterService } from '../../services/EncounterService';
 import { PlayerElement } from '../PlayerElement/PlayerElement';
 import { EncounterSortPlugin } from '../../interfaces/Sort/EncounterSortPlugin';
 import { HookSubscription } from '@edunad/hooks';
-
-const MAX_PLAYERS: number = 10;
+import { SettingsService } from '../../services/SettingsService';
 
 interface PlayerContainerProps {
     isResizing: boolean;
@@ -19,24 +18,29 @@ interface PlayerContainerProps {
 interface PlayerContainerState {
     currentEncounter: Encounter;
     currentSortPlugin: EncounterSortPlugin;
+    isMinified: boolean;
 }
 
 export class PlayerContainer extends React.Component<PlayerContainerProps, PlayerContainerState> {
     private onEncounterUpdate: HookSubscription;
     private onSortUpdate: HookSubscription;
+    private onMinifyUpdate: HookSubscription;
 
     constructor(props: PlayerContainerProps) {
         super(props);
         this.state = {
             currentEncounter: null,
-            currentSortPlugin: null
+            currentSortPlugin: null,
+
+            isMinified: false
         };
     }
 
     public componentDidMount(): void {
         this.setState({
             currentEncounter: EncounterService.getCurrentEncounter(),
-            currentSortPlugin: EncounterService.getCurrentSortPlugin()
+            currentSortPlugin: EncounterService.getCurrentSortPlugin(),
+            isMinified: SettingsService.isMinified()
         });
 
         this.subscribeObservables();
@@ -59,11 +63,17 @@ export class PlayerContainer extends React.Component<PlayerContainerProps, Playe
             });
         });
 
+        this.onMinifyUpdate = SettingsService.onMinifyChange.add('player-minifyUpdate', (data: boolean) => {
+            this.setState({
+                isMinified: data
+            });
+        });
     }
 
     private unsubscribeObservables(): void {
         this.onEncounterUpdate.destroy();
         this.onSortUpdate.destroy();
+        this.onMinifyUpdate.destroy();
     }
 
     private isPlayerVisibile(target: Player, plys: Player[]): [boolean, number] {
@@ -76,7 +86,7 @@ export class PlayerContainer extends React.Component<PlayerContainerProps, Playe
         let canSee: boolean = false;
         let visibleRows: number = 0;
 
-        for(visibleRows = 0; visibleRows < MAX_PLAYERS; visibleRows++) {
+        for(visibleRows = 0; visibleRows < plys.length; visibleRows++) {
             if(currentSize >= bounds.height) break;
             currentSize += playerElementSize;
 
@@ -96,6 +106,7 @@ export class PlayerContainer extends React.Component<PlayerContainerProps, Playe
                 key={ply.getName()}
                 sorting={this.state.currentSortPlugin}
                 player={ply}
+                minified={this.state.isMinified}
             />
         );
     }

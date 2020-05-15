@@ -138,7 +138,8 @@ module.exports = new Promise(function (resolve, reject) {
 
         config.plugins.push(
             new webpack.DefinePlugin({
-                '__PLUGINS__': JSON.stringify(locations)
+                '__PLUGINS__': JSON.stringify(locations),
+                '__PRODUCTION__': production
             })
         );
 

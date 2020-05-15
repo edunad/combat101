@@ -11,6 +11,7 @@ interface PlayerProps {
     index: number;
     player: Player;
     sorting: EncounterSortPlugin;
+    minified?: boolean;
 }
 
 export class PlayerElement extends React.Component<PlayerProps> {
@@ -31,13 +32,13 @@ export class PlayerElement extends React.Component<PlayerProps> {
         let percent: string = this.props.sorting.getBarPercent(user);
 
         return(
-            <div className='player-container'>
-                <img className='player-icon' src={user.getIcon()}/>
-                <div className={`player-info-container ${user.isLocalPlayer() ? 'you' : ''}`}>
-                    <div className='player-background'/>
+            <div className={`player-container ${user.isLocalPlayer() ? 'you' : ''}`}>
+                { !this.props.minified ? <img className='player-icon' src={user.getIcon()}/> : null}
+                <div className='player-info-container'>
                     <Bar color={color} percent={percent}/>
 
-                    <div className='player-info'>{this.props.index}. {user.getName()}</div>
+                    <div className='player-position'>{this.props.index}.</div>
+                    <div className='player-name'>{user.getName()}</div>
                     <div className='player-numbers'>{numbers}</div>
                 </div>
             </div>

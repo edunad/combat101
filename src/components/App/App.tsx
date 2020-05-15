@@ -15,6 +15,7 @@ import { ResizeHandler } from '../ResizeHandler/ResizeHandler';
 import { SettingsContainer } from '../SettingsContainer/SettingsContainer';
 import { Menu } from '../../enums/Menu';
 
+// TODO : REVERSE ARROW
 
 /**
  * The AppState interface
@@ -49,12 +50,14 @@ export class App extends React.Component<any, AppState>  {
         this.subscribeObservables();
 
         PluginService.initialize(() => {
-            OverlayService.initialize();
+            let gameFound: boolean = OverlayService.initialize();
             SchemasService.initialize();
             EncounterService.initialize();
 
             // Uncomment for mock data testing
-            //OverlayService.loadMockData(0, 0);
+            if(!gameFound || !window['__PRODUCTION__']) {
+                OverlayService.loadMockData(0, 0);
+            }
 
             this.setState({
                 isLoaded: true,
@@ -102,7 +105,7 @@ export class App extends React.Component<any, AppState>  {
         );
     }
 
-    private renderMenu(): any{
+    private renderMenu(): any {
         switch(this.state.currentMenu) {
             case Menu.SETTINGS:
                 return this.settingsRoute();
@@ -110,6 +113,10 @@ export class App extends React.Component<any, AppState>  {
             default:
                 return this.playerContainerRoute();
         }
+    }
+
+    private onResize(): void {
+        this.setState(this.state); // Force a update :P
     }
 
     private renderApp(): any {
@@ -124,9 +131,17 @@ export class App extends React.Component<any, AppState>  {
 
                 {this.renderMenu()}
 
-                <ResizeHandler enabled={this.state.isResizing}>
-                    --------------------------------------------------
-                </ResizeHandler>
+                <ResizeHandler
+                    vertical={false}
+                    enabled={this.state.isResizing}
+                    onResize={this.onResize.bind(this)}
+                />
+
+                <ResizeHandler
+                    vertical={true}
+                    enabled={this.state.isResizing}
+                    onResize={this.onResize.bind(this)}
+                />
             </>
         );
     }

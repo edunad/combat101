@@ -22,6 +22,6 @@ export class DPS implements EncounterSortPlugin {
     }
 
     private getDPS(ply: Player): number {
-        return ply.getDataNumber('dps');
+        return ply.getDataNumber('encdps');
     }
 }

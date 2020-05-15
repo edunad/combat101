@@ -19,25 +19,29 @@ interface NavbarProps {
 interface NavbarState {
     currentEncounter: Encounter;
     currentSortPlugin: EncounterSortPlugin;
+    isMinified: boolean;
 }
 
 export class Navbar extends React.Component<NavbarProps, NavbarState> {
     private onEncounterUpdate: HookSubscription;
     private onSortUpdate: HookSubscription;
+    private onMinifyUpdate: HookSubscription;
 
     constructor(props: NavbarProps) {
         super(props);
 
         this.state = {
             currentEncounter: null,
-            currentSortPlugin: null
+            currentSortPlugin: null,
+            isMinified: false
         };
     }
 
     public componentDidMount(): void {
         this.setState({
             currentEncounter: EncounterService.getCurrentEncounter(),
-            currentSortPlugin: EncounterService.getCurrentSortPlugin()
+            currentSortPlugin: EncounterService.getCurrentSortPlugin(),
+            isMinified: SettingsService.isMinified()
         });
 
         this.subscribeObservables();
@@ -60,11 +64,17 @@ export class Navbar extends React.Component<NavbarProps, NavbarState> {
             });
         });
 
+        this.onMinifyUpdate = SettingsService.onMinifyChange.add('navbar-minifyUpdate', (data: boolean) => {
+            this.setState({
+                isMinified: data
+            });
+        });
     }
 
     private unsubscribeObservables(): void {
         this.onEncounterUpdate.destroy();
         this.onSortUpdate.destroy();
+        this.onMinifyUpdate.destroy();
     }
 
     private getTime(): string {
@@ -109,6 +119,14 @@ export class Navbar extends React.Component<NavbarProps, NavbarState> {
         );
     }
 
+    public getTitle(): string {
+        if(this.state.isMinified) {
+            return `${this.getPluginTitle()}`
+        } else {
+            return `${this.getTime()} - ${this.getPluginTitle()}`
+        }
+    }
+
     /**
      * React render method
      *
@@ -118,7 +136,7 @@ export class Navbar extends React.Component<NavbarProps, NavbarState> {
         return(
             <>
                 <div className='navbar-container'>
-                    <div className='navbar-title'>{this.getTime()} - {this.getPluginTitle()}</div>
+                    <div className='navbar-title'>{this.getTitle()}</div>
                     <div className='navbar-tools'>{this.drawSettings()}</div>
                 </div>
             </>

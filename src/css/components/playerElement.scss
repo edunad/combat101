@@ -3,9 +3,52 @@
     flex-direction: row;
     align-items: center;
 
+    width: 100%;
+
     letter-spacing: 1px;
     font-size: 13px;
     height: 20px;
+}
+
+.player-container.you {
+    background-color:rgba(44, 1, 1, 0.8);
+}
+
+.player-info-container {
+    display: flex;
+    flex: 1;
+    justify-self: center;
+
+    padding-left: 4px;
+
+    height: 100%;
+    position: relative;
+
+    background-image: url('../../assets/img/background-dots.png');
+    background-repeat: repeat;
+
+    overflow: hidden;
+}
+
+.player-position {
+    flex-shrink: 0;
+
+    position: relative;
+    top: 1px;
+}
+
+.player-name {
+    text-transform: capitalize;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-all;
+    white-space: nowrap;
+
+    color: white;
+
+    position: relative;
+    top: 1px;
 }
 
 .player-icon {
@@ -17,61 +60,16 @@
     height: 100%;
 }
 
-.player-info-container {
+.player-numbers {
     display: flex;
-    flex-direction: row;
     flex: 1;
+    flex-direction: row-reverse;
 
-    background-color:#0000008a;
-    align-items: center;
+    padding: 0 4px;
 
-    height: 100%;
-    position: relative;
-}
-
-.player-info-container.you {
-    background-color:rgba(44, 1, 1, 0.8);
-}
-
-.player-info {
-    padding-left: 4px;
-    flex: 1;
-
-    text-transform: capitalize;
-
-    overflow: hidden;
-    text-overflow: ellipsis;
     word-break: break-all;
     white-space: nowrap;
 
-    color: white;
-
     position: relative;
-    top: -1px;
-
-    z-index: 10;
-}
-
-.player-numbers {
-    padding-right: 4px;
-
-    position: relative;
-    top: -1px;
-
-    z-index: 10;
-}
-
-.player-background {
-    position: absolute;
-    top: 0;
-    left: 0;
-
-    width: 100%;
-    height: 100%;
-
-    z-index:01;
-    opacity: 0.4;
-
-    background-image: url('../../assets/img/background-dots.png');
-    background-repeat: repeat;
+    top: 1px;
 }
