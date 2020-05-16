@@ -2,6 +2,7 @@
 const path = require('path');
 const glob = require("glob");
 
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
@@ -15,7 +16,7 @@ let config = {
 
     output: {
         path: path.resolve(__dirname, './docs'),
-        filename: '[name].js'
+        filename: '[name][contenthash].js'
     },
 
     performance: {
@@ -40,13 +41,13 @@ let config = {
 
     module: {
         rules: [
-            {
+            /*{
                 test: /\.(html|htm)?$/,
                 loader: 'file-loader',
                 options: {
                     name: './[name].[ext]'
                 }
-            },
+            },*/
             {
                 test: /\.(png|jpg|gif)$/i,
                 use: [
@@ -101,8 +102,8 @@ let config = {
 
     plugins: [
         new MiniCssExtractPlugin({
-            filename: './styles.css',
-            chunkFilename: './styles.css'
+            filename: './styles[contenthash].css',
+            chunkFilename: './styles[contenthash].css'
         }),
         new OptimizeCssAssetsPlugin({
             assetNameRegExp: /\.css$/g,
@@ -115,6 +116,9 @@ let config = {
         new CopyPlugin([
             { from: './src/assets', to: './assets' }
         ]),
+        new HtmlWebpackPlugin({
+            template: './src/index.html'
+        })
     ]
 };
 

@@ -14,7 +14,6 @@ import { PlayerContainer } from '../PlayerContainer/PlayerContainer';
 import { ResizeHandler } from '../ResizeHandler/ResizeHandler';
 import { SettingsContainer } from '../SettingsContainer/SettingsContainer';
 import { Menu } from '../../enums/Menu';
-import { Settings } from '../../interfaces/Settings';
 
 declare var __PRODUCTION__: boolean;
 
