@@ -6,6 +6,16 @@
 
     position: absolute;
     z-index: 100;
+}
+
+.resize-handler-vertical.disabled,
+.resize-handler.disabled {
+    -webkit-app-region: drag;
+    display: none;
+}
+
+.resize-handler-vertical.enabled,
+.resize-handler.enabled {
     -webkit-app-region: no-drag;
 }
 

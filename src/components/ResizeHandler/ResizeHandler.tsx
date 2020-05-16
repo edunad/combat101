@@ -112,10 +112,12 @@ export class ResizeHandler extends React.Component<ResizeProps, ResizeState> {
      * @returns {any}
      */
     public render(): any {
-        if(!this.props.enabled) return null;
+        let enabled: boolean = this.props.enabled;
+        let classes: string = `resize-handler${this.props.vertical ? '' : '-vertical'} ${this.props.inverted ? 'inverted' : ''} ${enabled ? 'enabled': 'disabled'}`;
+
         return(
             <div
-                className={`resize-handler${this.props.vertical ? '' : '-vertical'} ${this.props.inverted ? 'inverted' : ''}`}
+                className={classes}
                 onMouseDown={this.startDrag.bind(this)}/>
         );
     }

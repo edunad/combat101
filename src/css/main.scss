@@ -9,12 +9,13 @@ body {
 
     text-rendering: optimizeLegibility;
     touch-action: manipulation;
-    -webkit-user-drag: none;
     -ms-content-zooming: none;
 
     word-wrap: break-word;
     overscroll-behavior-y: none;
     text-size-adjust: none;
+
+    -webkit-app-region: drag;
 
     display: flex;
 }
