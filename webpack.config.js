@@ -106,9 +106,11 @@ let config = {
             },
             canPrint: true
         }),
-        new CopyPlugin([
-            { from: './src/assets', to: './assets' }
-        ]),
+        new CopyPlugin({
+            patterns: [
+                { from: './src/assets', to: './assets' }
+            ]
+        }),
         new HtmlWebpackPlugin({
             template: './index.html'
         })
