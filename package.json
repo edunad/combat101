@@ -14,14 +14,14 @@
     "devDependencies": {
         "@types/react": "^16.9.35",
         "@types/react-dom": "^16.9.8",
-        "copy-webpack-plugin": "^5.1.1",
+        "copy-webpack-plugin": "^6.0.1",
         "css-loader": "^3.5.3",
         "file-loader": "^6.0.0",
         "html-webpack-plugin": "^4.3.0",
         "mini-css-extract-plugin": "^0.9.0",
         "node-sass": "^4.14.1",
         "optimize-css-assets-webpack-plugin": "^5.0.3",
-        "remove-files-webpack-plugin": "^1.4.1",
+        "remove-files-webpack-plugin": "^1.4.2",
         "sass-loader": "^8.0.2",
         "ts-loader": "^7.0.4",
         "tslint": "^6.1.2",
@@ -33,7 +33,7 @@
         "webpack-dev-server": "^3.11.0"
     },
     "scripts": {
-        "start": "webpack --config webpack.config.js --progress --mode production",
+        "start": "webpack --config webpack.config.js --progress --mode development",
         "watch": "webpack --config webpack.config.js --progress --watch --mode development",
         "dev": "webpack-dev-server",
         "lint": "tslint ./src/**/*.tsx"
