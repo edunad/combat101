@@ -54,11 +54,10 @@ export class App extends React.Component<any, AppState>  {
     public componentDidMount(): void {
         this.subscribeObservables();
 
+        OverlayService.initialize();
         PluginService.initialize(() => {
             if(OverlayService.getAPI() == null || !__PRODUCTION__) {
                 OverlayService.loadMockData(0, 1000);
-            } else {
-                OverlayService.initialize();
             }
 
             SettingsService.initialize();
