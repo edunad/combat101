@@ -87,7 +87,6 @@ export class PlayerContainer extends React.Component<any, PlayerContainerState> 
             if(plys[visibleRows] == null) continue;
             if(plys[visibleRows] === target) {
                 canSee = true;
-                break;
             }
         }
 
@@ -112,6 +111,7 @@ export class PlayerContainer extends React.Component<any, PlayerContainerState> 
 
         // Make sure the player is ALWAYS visible, even if doing an awful job :3
         return plys.map((ply: Player, index: number) => {
+            if(index >= canSeePlayer[1]) return;
             if(canSeePlayer != null && !canSeePlayer[0] && index >= (canSeePlayer[1] - 1)) {
                 if(index == (canSeePlayer[1] - 1)){
                    return this.renderPlayer(localPly[1] + 1, localPly[0]);
