@@ -16,7 +16,7 @@ let config = {
 
     output: {
         path: path.resolve(__dirname, './docs'),
-        filename: '[name][contenthash].js'
+        filename: '[name]-[contenthash].js'
     },
 
     performance: {
@@ -41,13 +41,6 @@ let config = {
 
     module: {
         rules: [
-            /*{
-                test: /\.(html|htm)?$/,
-                loader: 'file-loader',
-                options: {
-                    name: './[name].[ext]'
-                }
-            },*/
             {
                 test: /\.(png|jpg|gif)$/i,
                 use: [
@@ -102,8 +95,8 @@ let config = {
 
     plugins: [
         new MiniCssExtractPlugin({
-            filename: './styles[contenthash].css',
-            chunkFilename: './styles[contenthash].css'
+            filename: './styles-[contenthash].css',
+            chunkFilename: './styles-[contenthash].css'
         }),
         new OptimizeCssAssetsPlugin({
             assetNameRegExp: /\.css$/g,
@@ -117,7 +110,7 @@ let config = {
             { from: './src/assets', to: './assets' }
         ]),
         new HtmlWebpackPlugin({
-            template: './src/index.html'
+            template: './index.html'
         })
     ]
 };
