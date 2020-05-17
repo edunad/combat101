@@ -1,13 +1,21 @@
-import { PlayerData } from '../interfaces/Player/PlayerData';
 import { PlayerProfile } from '../interfaces/Player/PlayerProfile';
 import { PlayerJob } from '../interfaces/Player/PlayerJob';
 
 export class Player {
     private profile: PlayerProfile;
     private data: any;
+    private position: number;
 
     constructor(profile: PlayerProfile) {
         this.profile = profile;
+    }
+
+    public setPosition(position: number): void {
+        this.position = position;
+    }
+
+    public getPosition(): number {
+        return this.position;
     }
 
     public isLocalPlayer(): boolean {

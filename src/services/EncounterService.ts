@@ -49,17 +49,6 @@ export class EncounterService {
         return this.currentSortPlugin;
     }
 
-    public static getLocalPlayer(): [Player, number] {
-        let found: [Player, number] = null;
-
-        if(this.currentEncounter == null) return found;
-        this.currentEncounter.getPlayers().forEach((ply: Player, indx: number) => {
-            if(ply.isLocalPlayer()) found = [ply, indx];
-        });
-
-        return found;
-    }
-
     private static saveCurrentSort(): void {
         SettingsService.getSettings().selectedSortID = this.currentSortPlugin.getID();
         SettingsService.save();
@@ -69,6 +58,7 @@ export class EncounterService {
         if(this.currentEncounter == null) return;
 
         this.currentEncounter.sortPlayers(this.currentSortPlugin);
+        this.setPlayerPositions(this.currentEncounter);
         this.onEncounterUpdate.emit(this.currentEncounter);
     }
 
@@ -86,9 +76,18 @@ export class EncounterService {
 
         encounter.setPlayers(data[1]);
         encounter.sortPlayers(this.currentSortPlugin);
+        this.setPlayerPositions(encounter);
 
         this.currentEncounter = encounter;
         this.onEncounterUpdate.emit(this.currentEncounter);
+    }
+
+    private static setPlayerPositions(enc: Encounter): void {
+        if(enc == null) return;
+
+        enc.getPlayers().forEach((ply: Player, indx: number) => {
+            ply.setPosition(indx);
+        });
     }
 
     private static unbindObservables(): void {

@@ -2,14 +2,15 @@
 
 import * as React from 'react';
 import FlipMove from 'react-flip-move';
+import { HookSubscription } from '@edunad/hooks';
 
 import { Player } from '../../models/Player';
 import { Encounter } from '../../models/Encounter';
 import { EncounterService } from '../../services/EncounterService';
 import { PlayerElement } from '../PlayerElement/PlayerElement';
 import { EncounterSortPlugin } from '../../interfaces/Sort/EncounterSortPlugin';
-import { HookSubscription } from '@edunad/hooks';
 import { SettingsService } from '../../services/SettingsService';
+import { OverlayService } from '../../services/OverlayService';
 
 interface PlayerContainerState {
     currentEncounter: Encounter;
@@ -73,29 +74,31 @@ export class PlayerContainer extends React.Component<any, PlayerContainerState> 
         this.onMinifyUpdate.destroy();
     }
 
-    private isPlayerVisibile(target: Player, plys: Player[]): [boolean, number] {
+    private visibleInRows(ply: Player, plys: Player[]): [number, boolean] {
         let bounds: DOMRect = window['app-container'].getBoundingClientRect();
+        if(bounds == null || ply == null) return [plys.length, true];
+
         let playerElementSize: number = 20; // In pixels
-        let currentSize: number = 22;
-        let canSee: boolean = false;
+        let currentSize: number = 20;
         let visibleRows: number = 0;
+        let isVisible: boolean = false;
 
         for(visibleRows = 0; visibleRows < plys.length; visibleRows++) {
-            if(currentSize >= bounds.height) break;
-            currentSize += playerElementSize;
-
             if(plys[visibleRows] == null) continue;
-            if(plys[visibleRows] === target) {
-                canSee = true;
+            if(currentSize >= bounds.height) break;
+
+            currentSize += playerElementSize;
+            if(plys[visibleRows] === ply) {
+                isVisible = true;
             }
         }
 
-        return [canSee, visibleRows];
+        return [visibleRows, isVisible];
     }
 
-    private renderPlayer(index: number, ply: Player): any {
+    private renderPlayer(ply: Player): any {
         return (
-            <PlayerElement index={index}
+            <PlayerElement index={ply.getPosition() + 1}
                 key={ply.getName()}
                 sorting={this.state.currentSortPlugin}
                 player={ply}
@@ -105,19 +108,21 @@ export class PlayerContainer extends React.Component<any, PlayerContainerState> 
     }
 
     private renderPlayers(plys: Player[]): any {
-        let localPly: [Player, number] = EncounterService.getLocalPlayer();
-        let canSeePlayer: [boolean, number] = null;
-        if(localPly != null) canSeePlayer = this.isPlayerVisibile(localPly[0], plys);
+        if(plys == null || plys.length <= 0) return;
+
+        let localPly: Player = OverlayService.localPlayer;
+        let playerVisible: [number, boolean] = this.visibleInRows(localPly, plys);
 
         // Make sure the player is ALWAYS visible, even if doing an awful job :3
         return plys.map((ply: Player, index: number) => {
-            if(index >= canSeePlayer[1]) return;
-            if(canSeePlayer != null && !canSeePlayer[0] && index >= (canSeePlayer[1] - 1)) {
-                if(index == (canSeePlayer[1] - 1)){
-                   return this.renderPlayer(localPly[1] + 1, localPly[0]);
-                }
+            let totalIndx: number = playerVisible[0];
+            if(index >= totalIndx) return;
+
+            // Player not visible and the index is on the last row
+            if(!playerVisible[1] && index == (totalIndx - 1)) {
+                return this.renderPlayer(localPly);
             } else {
-                return this.renderPlayer(index + 1, ply);
+                return this.renderPlayer(ply);
             }
         });
     }

@@ -98,7 +98,7 @@ export class ResizeHandler extends React.Component<ResizeProps, ResizeState> {
             if(!this.state.isDragging) return;
 
             if(this.props.vertical){
-                this.moveDrag($event, 42, 220, 20);
+                this.moveDrag($event, 40, 220, 20);
             } else {
                 this.moveDrag($event, MIN_WIDTH, MAX_WIDTH);
             }

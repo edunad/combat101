@@ -33,7 +33,7 @@
         "webpack-dev-server": "^3.11.0"
     },
     "scripts": {
-        "start": "webpack --config webpack.config.js --progress --mode development",
+        "start": "webpack --config webpack.config.js --progress --mode production",
         "watch": "webpack --config webpack.config.js --progress --watch --mode development",
         "dev": "webpack-dev-server",
         "lint": "tslint ./src/**/*.tsx"

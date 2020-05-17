@@ -13,8 +13,6 @@ export class SchemasService {
     public static getJobFromScheme(id: string): PlayerJob {
         let schemaData: any = this.schema[id];
         if(schemaData == null) {
-            this.onDebug(`Failed to find job id {${id}}!`);
-
             id = 'DEFAULT';
             schemaData = this.schema['DEFAULT'];
         }
@@ -30,16 +28,5 @@ export class SchemasService {
         let group: any = groups[id];
         if(group == null || group['icon'] == null) return 'DEFAULT';
         return group['icon'];
-    }
-
-    /**
-     * Print a debug message of the service if enabled
-     *
-     * @param {string} text - the debug message
-     * @returns {void}
-     */
-    private static onDebug(text: string): void {
-        if (!DEBUG_SERVICE) return;
-        console.debug(`[SchemasService] ${text}`);
     }
 }

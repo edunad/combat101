@@ -21,6 +21,8 @@ export class OverlayService {
     public static onOverlayDataUpdate: Hook<any> = new Hook<any>();
     public static onOverlayCombatUpdate: Hook<[Encounter, Player[]]> = new Hook<[Encounter, Player[]]>();
 
+    public static localPlayer: Player;
+
     public static initialize(): void {
         this.registerListeners();
     }
@@ -92,7 +94,7 @@ export class OverlayService {
         if(combData != null) {
             let combatRawData: any = Object.values(combData);
 
-            Object.keys(combData).forEach((id: string) => {
+            Object.keys(combData).forEach((id: string, indx: number) => {
                 if(id === 'Limit Break') return; // Ignore 'Limit Break'
 
                 let rawData: any = combData[id];
@@ -107,6 +109,7 @@ export class OverlayService {
                 });
 
                 ply.updateData(rawData);
+                if(ply.isLocalPlayer()) this.localPlayer = ply; // For quick access
 
                 /* Inject extra data */
                 ply.updateSingleData('dps_perc', this.getZonePercentage(combatRawData, ply, 'encdps') + '%');

@@ -55,7 +55,7 @@ export class App extends React.Component<any, AppState>  {
 
         OverlayService.initialize();
         PluginService.initialize(() => {
-            //if(!__PRODUCTION__) OverlayService.loadMockData(0, 1000);
+            if(!__PRODUCTION__) OverlayService.loadMockData(0, 1000);
 
             SettingsService.initialize();
             SchemasService.initialize();
