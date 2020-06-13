@@ -22,7 +22,7 @@ export class TOTALDMG implements EncounterSortPlugin {
     }
 
     private getDPS(ply: Player): number {
-        return ply.getDataNumber('dps');
+        return ply.getDataNumber('encdps');
     }
 
     private getTotalDamage(ply: Player, percent: boolean = false): any {

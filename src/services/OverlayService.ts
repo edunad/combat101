@@ -45,8 +45,8 @@ export class OverlayService {
                     let key: string = Object.keys(mockData.Combatant)[Math.getRandom(0, Object.keys(mockData.Combatant).length - 1)];
                     let ply: any = mockData.Combatant[key];
 
-                    ply['encdps'] = Math.getRandom(0, 10000).toString();
-                    ply['ENCHPS'] = Math.getRandom(0, 10000).toString();
+                    ply['encdps'] = Math.getRandom(0, 10000);
+                    ply['ENCHPS'] = Math.getRandom(0, 10000);
 
                     this.onOverlayCombatUpdate.emit(this.parseCombatData(mockData));
                 }, interval);

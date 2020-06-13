@@ -55,12 +55,12 @@ export class App extends React.Component<any, AppState>  {
 
         OverlayService.initialize();
         PluginService.initialize(() => {
-            if(!__PRODUCTION__) OverlayService.loadMockData(0, 1000);
+            let debug: boolean = localStorage.getItem('DEBUG_MODE') != null && localStorage.getItem('DEBUG_MODE') === 'true';
+            if(!__PRODUCTION__ || debug) OverlayService.loadMockData(0, 1000);
 
             SettingsService.initialize();
             SchemasService.initialize();
             EncounterService.initialize();
-
 
             this.setState({
                 isLoaded: true,
