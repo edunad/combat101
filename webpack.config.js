@@ -4,9 +4,8 @@ const glob = require("glob");
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
-const RemovePlugin = require('remove-files-webpack-plugin');
 
 const webpack = require('webpack');
 
@@ -16,7 +15,8 @@ let config = {
 
     output: {
         path: path.resolve(__dirname, './docs'),
-        filename: '[name]-[contenthash].js'
+        filename: '[name]-[contenthash].js',
+        clean: true, // Clean the output directory before emit.
     },
 
     performance: {
@@ -63,10 +63,7 @@ let config = {
 
             {
                 test: /\.css$/,
-                use: [
-                    MiniCssExtractPlugin.loader,
-                    { loader: 'css-loader', options: { url: false } }
-                ]
+                use: [MiniCssExtractPlugin.loader, { loader: 'css-loader', options: { url: false } }],
             },
 
             {
@@ -74,8 +71,8 @@ let config = {
                 use: [
                     MiniCssExtractPlugin.loader,
                     { loader: 'css-loader', options: { sourceMap: true, importLoaders: 1, url: false } }, // translates CSS into CommonJS
-                    { loader: 'sass-loader', options: { sourceMap: true } }
-                ]
+                    { loader: 'sass-loader', options: { sourceMap: true } },
+                ],
             },
 
             {
@@ -92,19 +89,18 @@ let config = {
             }
         ]
     },
-
+    optimization: {
+        minimizer: [
+            new CssMinimizerPlugin({
+                test: /\.css$/g,
+                minify: [CssMinimizerPlugin.cssnanoMinify],
+            }),
+        ],
+    },
     plugins: [
         new MiniCssExtractPlugin({
             filename: './styles-[contenthash].css',
-            chunkFilename: './styles-[contenthash].css'
-        }),
-        new OptimizeCssAssetsPlugin({
-            assetNameRegExp: /\.css$/g,
-            cssProcessor: require('cssnano'),
-            cssProcessorPluginOptions: {
-                preset: ['default', {}],
-            },
-            canPrint: true
+            chunkFilename: './styles-[contenthash].css',
         }),
         new CopyPlugin({
             patterns: [
@@ -151,28 +147,12 @@ module.exports = (env, argv) => {
             console.warn(`==== PLUGINS FOUND :`);
             console.warn(locations);
             console.warn(`============= ======`)
-
             config.plugins.push(
                 new webpack.DefinePlugin({
                     '__PLUGINS__': JSON.stringify(locations),
                     '__PRODUCTION__': production
                 })
             );
-
-            if(production){
-                config.plugins.push(new RemovePlugin({
-                    before: {
-                        include: [
-                            './docs'
-                        ]
-                    },
-                    watch: {
-                        include: [
-                            './docs'
-                        ]
-                    }
-                }));
-            }
 
             return resolve(config);
         });
